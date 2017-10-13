@@ -1,0 +1,16 @@
+{%P|mlhtmlid=ml_hostalbum|%}
+<h1>Shader coding</h1>
+<p>Showcasing my 2013-2014 work on high-performance, <b>photo-realistic-<i>lighting</i></b> (so ignore the silly models I used here)
+GPU shader programs for <b>mobile</b></p>
+{T|AlbumIncl|}
+{X|album:
+	vars=[	("pbl","Physically-based lighting"),
+			("ssw","screen-space water"),
+			("np","no polygons"),
+			("autocover","true"),
+			("isr","infinitely smooth detail at all scales")
+	],
+	content=> {X|Gallery: But
+							(Dyn [	"{%pbl%}", "", "", "{%ssw%} ({%np%} = {%isr%})", "{%ssw%} ({%np%} = smooth transition from no-water to full-water)", "Screen-space terrain shader ({%np%} = {%isr%}; and no terrain size restrictions)", "{%pbl%}", "", "", "", "{%pbl%} + {%ssw%}", "", "{%pbl%}", "", "", "", "", "", "", "", "{%pbl%} + {%ssw%}", "{%pbl%} + color grading"])
+							(Range 11 32) |}
+|}

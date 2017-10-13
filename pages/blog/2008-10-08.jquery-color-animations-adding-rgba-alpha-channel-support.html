@@ -1,0 +1,9 @@
+<h1>JS rgbA animations</h1>
+<p>I like using <a href="http://www.css3.info/opacity_rgba_and_compromise/">CSS rgba colors</a> &mdash; awesome to use alpha channels directly with a given color without abusing CSS opacity..</p>
+<p>I also make heave use of <a href="http://jquery.com/">jQuery's</a> pretty sufficient out-of-the-box support for CSS-based animations and transitions.</p> <p>Using <a href="http://ejohn.org/">John Resig's</a> jQuery plugin for <a href="http://plugins.jquery.com/project/color">Color Animations</a>, the same good old $.animate() calls can be made to work seamlessly with CSS color properties such as backgroundColor, borderColor, outlineColor, color etc.</p>
+
+{X|h2: The catch |}
+<p>RGBA colors are ignored. I tried using the <a href="http://happinessinmycheeks.com/colorBlend">colorBlend fading plugin</a> but found two drawbacks: it had its own $.colorBlend() method rather than working seamlessly with $.animate() &mdash; which I didn't particularly mind &mdash; but it also caused sustained flickerings in my test cases (yes, even though the change log reported that many flickering bugs had been eliminated) and it doesn't technically work with an RGBA alpha channel but uses CSS opacity properties behind the scenes, which was not what I wanted.</p>
+
+{X|h2: The quick-and-dirty workaround: |}
+<p>I went back to John's <a href="http://plugins.jquery.com/project/color">Color Animations</a> plugin and extended it to work with RGBA colors, too. <a href="files/blog/jquery.color.js">Download the modified script here</a> (all modifications are clearly denoted by <code>/*BEGIN MOD*/</code> and <code>/*END MOD*/</code> comments).</p>

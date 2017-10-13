@@ -1,0 +1,502 @@
+|C|_hax_onparseerror: abort
+|C|hax_dir_cache:
+|C|process:pages:
+	skip=[], force=["*"], dirs=[]
+|C|hax_dir_deploy: deploy
+
+
+|C|dtformat:dtf_Page: %d %b %Y
+|C|dtformat:dtf_Nav: %d %b
+|C|dtformat:dtf_Long: %B %d
+|C|dtformat:dtf_Home: %d %b
+
+
+|X|hax.dtFormat:dtPage: :dtf_Page
+|X|hax.dtFormat:dtNav: :dtf_Nav
+|X|hax.dtFormat:dtHome: :dtf_Home
+|X|hax.dtFormat:dtLong: :dtf_Long
+|X|hax.miniTag:h2: h2: attr=[ ("id" , "{:c:}") ]
+|X|hax.miniTag:c: code
+|X|hax.noOp: id
+|X|hax.noOp: const: work.html
+|X|hax.unMarkup: strip
+|X|hax.feedView: FeedView:
+	xnameGroupHeading = "h2",
+	feedWrap = ("<ul class=\"ml-feed\">" , "</ul>"),
+	xnameFeedItem = "feeditem",
+	feedMore = ["<img>src","pic"]
+
+|X|hax.htmlLinks:TopNav:li:
+	 attr = [("class","ml-nav"),("&class","ml-nav-sel")],
+		 itemsFirst = [("index.html" , "Hi") , ("&blog.html" , "Blog")],
+		 itemsLast = [("work.html" , "Work") , ("phil.html" , "Me")],
+	 wrapHref = ("" , "")
+
+|X|hax.htmlAnchors:SideNav:h2:
+	considerEmpty = 0,
+	outputIfEmpty = "<style type='text/css'>#box_toc {display:none}</style>",
+	xmlEscapeHref = False
+
+|X|hax.htmlImage:Pic: files/img/pic: attrLink=[("class","ml-pic")], attrImg=[], xmlEscape=False
+|X|hax.htmlImage:PhotoL: files/img/photo: attrLink=[], attrImg=[("class","ml-photo-l")], xmlEscape=False
+|X|hax.htmlImage:PhotoR: files/img/photo: attrLink=[], attrImg=[("class","ml-photo-r")], xmlEscape=False
+|X|hax.htmlImage:Logo: files/img/logo: attrLink=[], attrImg=[("class","ml-logo")], xmlEscape=False
+|X|hax.htmlImage:FeedAutoIcon: : attrLink=[], attrImg=[("class","ml-feed-autoicon")], xmlEscape=False
+
+
+|X|hax.iterator:Gallery:
+	prefix = "<div id=\"ml_album\">\n",
+	suffix = "</div>",
+	joinVia = "\n",
+	content=>
+	<input id="mlir{:i:}" value="mlfp{:i:}" name="ml_img_rad" type="radio" />
+		<label for="mlir{:i:}"><img src="{%filedir%}{:v:}.{%ext%}" id="mlir{:i:}p" title="[{P|title|}] {:d:}" /></label>
+		<div id="mlfp{:i:}" style="background-image: url('{%filedir%}{:v:}.{%ext%}')"><div>
+			<i id="mlfp{:i:}_hl">{P|title|}</i> {:n:}/<span name="ml_piccount">{:l:}</span> &mdash; <b>{:d:}</b>
+		</div></div>
+
+
+|X|hax.iterator:Quote:
+	prefix = "{", suffix = "}", joinVia = "", content=> X|quote: vars=[{:v:}], content=>|
+
+|B|blog:
+	title="Marginalia", atomFile="Marginalia.atom", blokIndexPageFile="blog.html", inSitemap=True, desc=>
+	Snapshots of thought along the journey (plus some <i>actual</i> shots)
+|B|life:
+	title="Life Stream", atomFile="", blokIndexPageFile="life.html", inSitemap=False, desc=>
+	Events &apos;of record, just not social-media record&apos;
+
+
+|T|P|mlhtmlid:
+|T|P|fcatblog:dtLong
+|T|P|flwork:id
+|T|AlbumIncl:
+	<link href="ml-album.css" rel="stylesheet"/>
+	<script type="text/javascript" language="JavaScript" src="ml-album.js" defer="defer"></script>
+|T|LifeIncl:
+	<link href="ml-life.css" rel="stylesheet"/>
+|T|AlbumDyn:
+	<script type="text/javascript" language="JavaScript" src="ml-album-dyn.js" defer="defer"></script>
+
+
+|T|GoMisc: Go (misc)
+|T|Go: Go
+|T|Ts: TypeScript
+|T|Node: NodeJS
+|T|AspNet: ASP.NET
+|T|Go3d: Go+OpenGL
+|T|Sp: SharePoint
+|T|Cs: C# .NET
+|T|Hask: Haskell
+|T|Hasplained:
+	<div class="ml-info">The <i>HasPlained</i> series collects &quot;unusually-intuitive, remarkably-plain&quot; (for this
+	field) explanations on the more abstract Functional Programming / Haskell concepts.</div>
+|T|OldStuff:
+	<div class="ml-info">(Dead links likely: recovered from <a href="{P|old|}">my ancient blog</a>)</div>
+
+
+
+|P|intro:	dt="2016-06-05", cat="Entwickler", title="Developer", link="phil.html",
+			more=[("pic","Logo:elm-lang.png")], content=>
+			Full-stack &sdot; APIs / middleware &sdot; MVPs &sdot; mobile, 3D &amp; progressive web apps
+
+|P|intro:	dt="2016-06-01", cat="Programmierer", title="Coder", link="phil.html#box_skills",
+			more=[("pic","Logo:purescript.png")], content=>
+			Go &sdot; PureScript &sdot; Haskell, F#, Elm &sdot; C#, GLSL, WebGL &sdot; TypeScript, Node
+
+
+
+|P|quotes:	dt = "", cat = "", title = "Tony Hoare",
+			link = "",
+			more = [], content=>
+			There are two ways of constructing a software design: one way is to make it so simple that there are obviously no deficiencies, and the other way is make it so complicated that there are no obvious deficiencies. The first method is far more difficult.
+|P|quotes:	dt = "", cat = "", title = "T. S. Eliot",
+			link = "",
+			more = [], content=>
+			The last thing one discovers in composing a work is what to put first.
+|P|quotes:	dt = "", cat = "", title = "Marshall McLuhan",
+			link = "",
+			more = [], content=>
+			We shape our tools and afterwards our tools shape us.
+|P|quotes:	dt = "", cat = "", title = "Charles Mingus",
+			link = "",
+			more = [], content=>
+			Making the simple complicated is commonplace; making the complicated simple, awesomely simple, that's creativity.
+|P|quotes:	dt = "", cat = "", title = "John Tukey",
+			link = "",
+			more = [], content=>
+			An approximate answer to the right problem is worth a good deal more than an exact answer to an approximate problem.
+|P|quotes:	dt = "", cat = "", title = "Edsger Dijkstra",
+			link = "",
+			more = [], content=>
+			Simplicity is a great virtue but it requires hard work to achieve it and education to appreciate it. And to make matters worse: complexity sells better.
+|P|quotes:	dt = "", cat = "", title = "Eric Sevareid",
+			link = "",
+			more = [], content=>
+			The chief source of problems is &quot;solutions&quot;.
+|P|quotes:	dt = "", cat = "", title = "Alan Perlis",
+			link = "",
+			more = [], content=>
+			Fools ignore complexity. Pragmatists suffer it. Some can avoid it. Geniuses remove it.
+|P|quotes:	dt = "", cat = "", title = "Charles F. Kettering",
+			link = "",
+			more = [], content=>
+			A problem well stated is a problem half solved.
+|P|quotes:	dt = "", cat = "", title = "Tony Hoare",
+			link = "",
+			more = [], content=>
+			Inside every large program is a small program struggling to get out.
+|P|quotes:	dt = "", cat = "", title = "Heraclitus",
+			link = "",
+			more = [], content=>
+			Man is most nearly himself when he achieves the seriousness of a child at play.
+|P|quotes:	dt = "", cat = "", title = "George Sand",
+			link = "",
+			more = [], content=>
+			Simplicity is the most difficult thing to secure in this world; it is the last limit of experience and the last effort of genius.
+|P|quotes:	dt = "", cat = "", title = "Brian Beckman", link = "href=\"https://youtu.be/ZhuHCtR3xq8?t=1003\"", more = [], content=>
+			As software gets ever more complicated, we need better control over the complexity. [...] <b>The</b> way to control complexity is compositionality.
+|P|quotes:	dt = "", cat = "", title = "Edsger Dijkstra",
+			link = "href=\"http://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html\"",
+			more = [], content=>
+			Simplicity is prerequisite for reliability.
+|P|quotes:	dt = "", cat = "", title = "Conal Elliott",
+			link = "href=\"http://conal.net/blog/posts/can-functional-programming-be-liberated-from-the-von-neumann-paradigm#comment-599\"",
+			more = [], content=>
+			Keep functionality &amp; interface together for usability and separable for composability.
+|P|quotes:	dt = "", cat = "", title = "Conal Elliott",
+			link = "href=\"https://www.reddit.com/r/haskell/comments/awqhz/what_does_monad_mean/c0jsmhj/\"",
+			more = [], content=>
+			Composability wins through <b>independence</b> of features.
+|P|quotes:	dt = "", cat = "", title = "Meister Eckhart",
+			link = "",
+			more = [], content=>
+			Only the hand that erases can write the true thing.
+|P|quotes:	dt = "", cat = "", title = "Philip Wadler",
+			link = "href=\"http://homepages.inf.ed.ac.uk/wadler/\"",
+			more = [], content=>
+			Whereas some declarative programmers only pay lip service to equational reasoning, users of functional languages exploit it every time they run a compiler, whether they notice it or not.
+|P|quotes:	dt = "", cat = "", title = "Bertrand Russell",
+			link = "",
+			more = [], content=>
+			Everything is vague to a degree you do not realize till you have tried to make it precise.
+|P|quotes:	dt = "", cat = "", title = "Pamela Zave",
+			link = "",
+			more = [], content=>
+			The purpose of software engineering is to control complexity, not to create it.
+|P|quotes:	dt = "", cat = "", title = "Ryan Singer",
+			link = "href=\"https://signalvnoise.com/posts/2316-so-much-complexity-in-software-comes-from\"",
+			more = [], content=>
+			So much complexity in software comes from trying to make one thing do two things.
+|P|quotes:	dt = "", cat = "", title = "John Gall",
+			link = "href=\"https://en.wikipedia.org/wiki/John_Gall_(author)#Gall.27s_law\"",
+			more = [], content=>
+			A complex system that works is invariably found to have evolved from a simple system that worked.
+|P|quotes:	dt = "", cat = "", title = "Buzz Andersen",
+			link = "",
+			more = [], content=>
+			Programmers spend the first 5 years of their career mastering complexity, and the rest of their lives learning simplicity.
+
+
+
+|P|work:	dt = "2017-03-18", cat = "{T|Go|}, {T|Ts|}, {T|Node|}",
+			title="Zentient",
+			link="http://github.com/metaleap/zentient", more=[("pic","Logo:golang1.png")],
+			content=>
+			A generalized IDE back-end for plugin-powered text editors: <b>multi-editor</b> (only VS-Code for now, Sublime planned) and <b>multi-language</b> (Go + Haskell for now, easily-extensible)
+
+|P|work:	dt = "2017-04-21", cat = "{T|Go|}",
+			title="ezMQ",
+			link="http://github.com/metaleap/go-ezmq", more=[("pic","Logo:simplesurance.png")],
+			content=>
+			A commissioned Go package providing a higher-level API for simplified RabbitMQ message-queuing by wrapping-abstracting-streamlining streadway/amqp under the hood.
+
+|P|work:	dt = "2017-04-27", cat = "{T|Go|}",
+			title="go-FromJsonSchema",
+			link="http://github.com/metaleap/go-fromjsonschema", more=[("pic","Logo:golang1.png")],
+			content=>
+			JSON schema (JSD) files are great for exposing interchange formats of REST APIs, DB schemas, custom protocols etc. to external code. Given such
+			a JSD definition, this package generates all the Go code necessary to load JSON documents of the therein-described format into the correct,
+			fully commented/documented (likewise from the JSD) runtime data struct(ure)s.
+
+|P|work:	dt = "2016-05-22", cat = "{T|Hask|}",
+			title="HaXtatic: static site generator",
+			link="http://github.com/metaleap/haxtatic/", more=[("pic","Logo:hask.png")],
+			content=>
+			"controls" (aka. "components" aka. sub-templates aka. parametric-snippets aka. what-have-you-lets) &sdot; iterating renderers &sdot; HTML short-hand helper ('haX')tags &sdot; navigation helpers &sdot; page context / page metadata haXtags &sdot; mix-and-match-and-combine-and-nest any haXtags &sdot; embed haXtags anywhere (source contents, templates/snippets(-aka.-controls), project/config file) &sdot; some almost-enough-for-a-coder's-minimalist-blog-or-three "section-of-related-pages" notion called "Bloks" &sdot; globally shared (even-simpler-than-controls) textual/markup snippets of course &sdot; custom per-page variables &sdot; commonly desirable XML outputs (<i>sitemap.xml</i>, <i>*.atom</i>) &sdot; mod-time-differential rebuilds &sdot; per-page caching across runs &sdot; of course per-file-type templating &sdot; composable "named setups" &sdot; extensive configurability &sdot; some notion of "postings"/"simpleton data records"/"static tweets" micro-content definitions (with fully custom rendering) &sdot; easily defined, easily applied custom date-time formats ...
+
+|P|work:	dt = "2013-06-16", cat = "{T|GoMisc|}",
+			title="go-fsDB",
+			link="http://github.com/metaleap/go-fsdb", more=[("pic","Logo:golang1.png")],
+			content=>
+			Virtual database driver (implementing database/sql interfaces) with a backing store of local JSON or TOML data text-files as 'DB tables'.
+
+|P|work:	dt = "2013-05-19", cat = "{T|GoMisc|}",
+			title="go-LeanSite",
+			link="http://github.com/metaleap/go-leansite", more=[("pic","Logo:golang1.png")],
+			content=>
+			Minimal web server for 'mostly static, mildly dynamic' sites in Go; stand-alone or on App Engine &mdash; <s>runs this <i>very</i> web site</s>; includes a Bootstrap+jQuery-based seed-site
+
+|P|work:	dt = "2013-02-27", cat = "{T|Go3d|}",
+			title="go-OpenGL",
+			link="http://github.com/metaleap/go-opengl", more=[("pic","Logo:golang1.png")],
+			content=>
+			Utility library for cross-platform, core-profile OpenGL graphics programming in Go &mdash; 'sane no-overhead wrappers' for real-time use-cases
+
+|P|work:	dt = "2013-02-10", cat = "{T|Go3d|}",
+			title="go-Collada",
+			link="http://github.com/metaleap/go-collada/", more=[("pic","Logo:golang1.png")],
+			content=>
+			A DOM API library for handling Collada documents in Go code; supports Collada 1.4.1 and 1.5
+
+|P|work:	dt = "2013-01-14", cat = "{T|Go3d|}",
+			title="go:ngine",
+			link="http://github.com/metaleap/go-ngine", more=[("pic","Logo:golang1.png")],
+			content=>
+			Real-time, cross-platform 3D graphics engine library for/in Go (the next-gen C); runs on OpenGL Core Profile (v3.3 or newer) and GLFW; parallelized multi-core render pipeline &sdot; textured primitive meshes &sdot; scene-graph &sdot; cubemapped sky-mesh (cube, dome, etc.) &sdot; GLSL '&uuml;ber-shader' permutation &sdot; post-processing FX &sdot; per-face multi-texturing / materials / effects &sdot; disk cache for on-demand pre-processed textures &sdot; render batching &sdot; frustum culling &sdot; HDR lighting &sdot; deferred shading
+
+|P|work:	dt = "2012-11-19", cat = "{T|GoMisc|}",
+			title="go-BuildRun",
+			link="http://github.com/metaleap/go-buildrun", more=[("pic","Logo:golang1.png")],
+			content=>
+			The 'swiss army knife' build tool of my dreams for Go projects: template-based code-gen pre-processor &amp; documentation generator; run golint, go vet, or any other specified pre-build commands
+
+|P|work:	dt = "2012-11-12", cat = "{T|GoMisc|}",
+			title="go-XSD",
+			link="http://github.com/metaleap/go-xsd", more=[("pic","Logo:golang1.png")],
+			content=>
+			A DOM API library for handling XML Schema Definition (XSD) documents in Go code; includes a source-code generator to instantly create 'native Golang bindings' for any given XML Schema Definition
+
+|P|work:	dt = "2012-10-18", cat = "{T|GoMisc|}",
+			title="go-Utils",
+			link="http://github.com/metaleap?tab=repositories&amp;q=go-util", more=[("pic","Logo:golang1.png")],
+			content=>
+			All the general-purpose programming libraries I was missing in vanilla Go; includes graphics, hashing, file I/O, networking, maths / numeric and string-processing helpers that I found indispensible in real-world Go programming
+
+|P|work:	dt = "2011-06-30", cat = "{T|Cs|}, {T|Sp|}",
+			title="SharePoint-Tools.NET: founding, ops, product development, docs, support, marketing, etc.",
+			link="http://roxority.squarespace.com/", more=[("pic","Logo:sptools.png")],
+			content=>
+			<ul><li>(Past URLs: roxority.com &amp; sharepoint-tools.net)</li><li>Complete product development from idea to roll-out, 5 products in total</li><li>Approx. 1000 licensees, between 100k and 1M+ human end-users world-wide</li><li>Tech stack: SharePoint 2007/2010/2013, ASP.NET, C#, SQL/BDC/XML/AJAX, HTML/CSS/JS</li><li>plus documentation / integration / localization and related product lifecycle management across legacy and modern SharePoint versions</li><li>each with familiar cross-product admin-UI 'Studio' pages auto-integrated into SharePoint without consuming Site or DB resources:</li></ul><ol><li>ExportZen &mdash; solution package for easy-yet-flexible one-click SharePoint <b>List data exports</b></li><li>FilterZen &mdash; the most versatile SharePoint <b>Search&amp;Filter components</b> 'ever'</li><li>UploadZen &mdash; enterprise-strength, cross-browser plugin-less replacement <b>Bulk Upload component</b></li><li>PeopleZen &mdash; supremely customizable intra-corporate social / <b>User Profile widgets</b></li><li>PrintZen &mdash; <b>power Printing feature pack</b> for SharePoint Library / Calendar / List Views</li></ol>
+
+|P|work:	dt = "2010-06-25", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Servier (Munich, Germany)",
+			link="", more=[("pic","Logo:servier.png")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2010-06-16", cat = "{T|Cs|}, {T|Sp|}",
+			title="Portal Systems Consulting (Potsdam, Germany)",
+			link="", more=[("pic","Logo:psc.png")],
+			content=>
+			Developed a 'superior' replacement SharePoint 'Lookup Column' custom-field-type component with numerous info-worker / power-user productivity features
+
+|P|work:	dt = "2010-04-16", cat = "{T|AspNet|}, {T|Sp|}",
+			title="German Quality Association (Frankfurt, Germany)",
+			link="", more=[("pic","Logo:dgq.png")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2010-01-23", cat = "{T|Cs|}, {T|Sp|}",
+			title="Visiting Angels (Bellingham, WA, USA)",
+			link="", more=[("pic","Logo:visiting-angels.png")],
+			content=>
+			Developed a bespoke server-side SharePoint batch-printing solution (with specific and complete duplex / stapling / etc. options)
+
+|P|work:	dt = "2009-11-19", cat = "{T|Cs|}, {T|Sp|}",
+			title="SentiTrade (Berlin, Germany)",
+			link="", more=[("pic","Logo:yukkalab.png")],
+			content=>
+			Developed seamless SharePoint integration with <i>GreenBox</i>, their sentiment-analysis / computational-linguistics / machine-learning solution
+
+|P|work:	dt = "2009-09-24", cat = "{T|Cs|}, {T|Sp|}",
+			title="Exerti (Itegem, Belgium)",
+			link="", more=[("pic","Logo:exerti.png")],
+			content=>
+			Bespoke SharePoint 'Business Data Catalog' Web Part development
+
+|P|work:	dt = "2009-09-15", cat = "{T|AspNet|}, {T|Sp|}",
+			title="VEMAG (Verden, Germany)",
+			link="", more=[("pic","Logo:vemag.png")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2009-02-26", cat = "{T|AspNet|}, {T|Sp|}",
+			title="K.D. Feddersen (Hamburg, Germany)",
+			link="", more=[("pic","Logo:kdfeddersen.png")],
+			content=>
+			SharePoint Site Theme design customizations, back-end development, genereal SharePoint development coaching and consulting
+
+|P|work:	dt = "2008-12-19", cat = "{T|Cs|}, {T|Sp|}",
+			title="DVZ Mecklenburg-Vorpommern (Schwerin, Germany)",
+			link="", more=[("pic","Logo:dvz.png")],
+			content=>
+			SharePoint migration consulting: on-site workshop and custom migration tooling development
+
+|P|work:	dt = "2008-11-10", cat = "{T|Cs|}, {T|Sp|}",
+			title="Swisscom IT Services (Z&uuml;rich, Switzerland)",
+			link="", more=[("pic","Logo:swisscom.png")],
+			content=>
+			Developed various bespoke SharePoint server-side components (custom Web Parts, business data import / export etc.)
+
+|P|work:	dt = "2008-08-21", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Sysmex (Norderstedt, Germany)",
+			link="", more=[("pic","Logo:sysmex.gif")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2008-07-18", cat = "{T|Cs|}, {T|Sp|}",
+			title="Portal Systems Consulting (Potsdam, Germany)",
+			link="", more=[("pic","Logo:psc.png")],
+			content=>
+			<ul><li>.NET development: integrated time &amp; project tracking with SharePoint &amp; Dynamics CRM</li><li>On-Site Developer Training: foundations of SharePoint &amp; ASP.NET development</li><li>On-Site Developer Training: understanding and using XPath &amp; XSLT in SharePoint &amp; .NET</li></ul>
+
+|P|work:	dt = "2008-06-24", cat = "{T|Cs|}, {T|Sp|}",
+			title="Salis IT Services (Cairo, Egypt)",
+			link="", more=[("pic","Logo:salis.png")],
+			content=>
+			A week of on-site, in-depth, hands-on coaching and training .NET developers on all aspects of SharePoint development, from server-side back-end programming to client-side front-end techniques
+
+|P|work:	dt = "2008-06-11", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Bauer Systems (Hamburg, Germany)",
+			link="", more=[("pic","Logo:bauer.gif")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2008-03-12", cat = "{T|Sp|}",
+			title="DHL IT Services (Fulda, Germany)",
+			link="", more=[("pic","Logo:dhl.png")],
+			content=>
+			&quot;Collaboration Consolidation Programme and Business Change Management: architectural guidance, technology consulting, project management and team- leading for various parallel migration efforts of isolated corporate application 'silos' to a central SharePoint 2007-based platform&quot;
+
+|P|work:	dt = "2008-01-21", cat = "{T|Cs|}, {T|Sp|}",
+			title="Homag (Schopfloch, Germany)",
+			link="", more=[("pic","Logo:homag.png")],
+			content=>
+			Developed a super-configurable, very-high-speed data processing and transformation tool for DMS-to-SharePoint migration
+
+|P|work:	dt = "2008-01-11", cat = "{T|AspNet|}, {T|Sp|}",
+			title="German Red Cross (Baden-Baden, Germany)",
+			link="", more=[("pic","Logo:drk-bsd.gif")],
+			content=>
+			Prototyped, designed and developed a cross-organizational custom intranet and collaboration portal on top of SharePoint Enterprise
+
+|P|work:	dt = "2007-11-12", cat = "{T|AspNet|}, {T|Sp|}",
+			title="BP (Lingen, Germany)",
+			link="", more=[("pic","Logo:bp.png")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2007-11-08", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Philips (Aachen, Germany)",
+			link="", more=[("pic","Logo:philips.png")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2007-10-11", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Coler (M&uuml;nster, Germany)",
+			link="", more=[("pic","Logo:coler.png")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2007-10-10", cat = "Web 2.0 / XHTML",
+			title="Axel Springer (Berlin, Germany)",
+			link="", more=[("pic","Logo:axel-springer.png")],
+			content=>
+			On-site web tech consulting, integration, implementation services to help deliver a &quot;standards-compliant, XML-driven, Web 2.0-strength&quot; (2007 lingo..) re-launch of the massively frequented, popular (&amp; populist) German online newspaper <b>Bild.de</b>
+
+|P|work:	dt = "2007-08-13", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Big Dutchman (Vechta, Germany)",
+			link="", more=[("pic","Logo:big-dutchman.png")],
+			content=>
+			Developed a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2007-08-08", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Solarlux (Osnabr&uuml;ck, Germany)",
+			link="", more=[("pic","Logo:solarlux.png")],
+			content=>
+			On-site workshop on SharePoint design customization and development of a turn-key SharePoint Site Theme for their corporate design
+
+|P|work:	dt = "2007-08-05", cat = "{T|Cs|}, {T|Sp|}",
+			title="d.velop (Gescher, Germany)",
+			link="", more=[("pic","Logo:dvelop.png")],
+			content=>
+			<ul><li>SharePoint Platform Services development:</li><li>prototyped and co-developed for their <i>SharePoint ECM Services</i> suite of products,</li><li>integrated their widely deployed Document Lifecycle and Archival technologies with core SharePoint tech such as Search, Document Libraries, Records Center and Web Parts</li></ul>
+
+|P|work:	dt = "2007-07-27", cat = "{T|AspNet|}, {T|Sp|}",
+			title="G&ouml;de Science Trust (Aschaffenburg, Germany)",
+			link="", more=[("pic","Logo:goede.png")],
+			content=>
+			On-site workshops &amp; consulting: legacy intranet migration to SharePoint 2007; WSS 3.0 development, pro-level customization, migration, deployment for production
+
+|P|work:	dt = "2007-03-14", cat = "{T|AspNet|}, {T|Sp|}",
+			title="dSPACE (Paderborn, Germany)",
+			link="", more=[("pic","Logo:dspace.png")],
+			content=>
+			<ul><li>Developed an HR &quot;Applicants Management System&quot; on SharePoint, .NET WebParts and MS Business Data Catalog</li><li>Developed a turn-key SharePoint Site Theme for their corporate design</li></ul>
+
+|P|work:	dt = "2007-03-08", cat = "{T|Sp|}",
+			title="Gildemeister-Seidensticker (Bielefeld, Germany)",
+			link="", more=[("pic","Logo:bkkgilsei.png")],
+			content=>
+			On-site workshop: SharePoint installation, administration, customization and enterprise search
+
+|P|work:	dt = "2007-01-26", cat = "{T|AspNet|}, {T|Sp|}",
+			title="Sony Europe (Berlin, Germany)",
+			link="", more=[("pic","Logo:sony.png")],
+			content=>
+			Developed a turn-key &quot;MS Office Online&quot;-style Site Theme for their corporate SharePoint intranet site.
+
+|P|work:	dt = "2006-09-15", cat = "{T|AspNet|}",
+			title="ArcelorMittal (Brandenburg, Germany)",
+			link="", more=[("pic","Logo:arcelor-mittal.png")],
+			content=>
+			Developed a web-based data-driven custom &quot;library, media and loans management system&quot; for <b>ArcelorMittal</b>'s in-house Technical Library (of patents, industrial norms etc)
+
+|P|work:	dt = "2006-08-15", cat = "{T|AspNet|}",
+			title="Masters Wines (New York City, USA)",
+			link="", more=[("pic","Logo:masters-wines.png")],
+			content=>
+			Development of business intelligence dashboards with neat charts, KPIs, real-time reports and customizable data aggregation
+
+|P|work:	dt = "2006-04-25", cat = "{T|Cs|}",
+			title="Quotator &mdash; rotator of alternating email signatures",
+			link="http://web.archive.org/web/20080621072227/http://www.quotator.net/", more=[("pic","Logo:quotator.png")],
+			content=>
+			I wanted constantly changing quotes in email signatures, so I wrote an app for that. Before long, I had a neat quotebook utility to offer to an appreciative audience increasing steadily. Took care of the website, support, feature requests and documentation for a while, until before long most folks moved over to web mail.
+
+|P|work:	dt = "2005-11-15", cat = "{T|Cs|}",
+			title="SuDoku Pro &mdash; shareware game + solving assistant + puzzle-book-maker",
+			link="http://discuss.joelonsoftware.com/default.asp?biz.5.246469.10", more=[("pic","Logo:sudoku-pro.png")],
+			content=>
+			A big Sudoku craze swept Europe in the mid-2000s. To study and experiment with solver algorithms, I developed a Windows game that quickly became quite popular 'shareware' (to the point of getting pirated). As user numbers piled up, so did interesting and challenging feature requests; from a solving assistant to full-fledged printing capabilities for making mags and books; plus the website, documentation and tech support kept me busy. As the fad faded and users flocked to browser and phone apps, everything was handed over to Pasadena-California-based &quot;Diangy Systems&quot; who had big plans for it...
+
+|P|work:	dt = "2005-10-15", cat = "{T|AspNet|}",
+			title="Collaborative Commerce Marketplace (Coventry, UK)",
+			link="", more=[("pic","Logo:wmg-wmccm.png")],
+			content=>
+			On-site consulting and co-development on an &quot;intelligent supply chain visibility management portal solution&quot; (yup..) for West Midlands CCM member companies.
+
+|P|work:	dt = "2004-06-15", cat = "{T|AspNet|}",
+			title="Insurance&amp;more (Berlin, Germany)",
+			link="", more=[("pic","Logo:iam.png")],
+			content=>
+			Conceptual consulting, architecture and prototype development for a somewhat elaborate (eventually moribund) startup to serve the German and European life insurance markets.
+
+|P|work:	dt = "2003-12-15", cat = "{T|AspNet|}",
+			title="Seminar for Advanced English Studies (Oxford, UK)",
+			link="", more=[("pic","Logo:saes.png")],
+			content=>
+			Website design and development, custom content management and customer relationship management tailored to the needs of my client <i>SAES.info</i>.
+
+|P|work:	dt = "2002-06-15", cat = "Win32 / VS 6.0",
+			title="Adhaero Technologies (Hemel Hampstead, UK)",
+			link="", more=[("pic","Logo:adhaero.gif")],
+			content=>
+			Back in the day a leader in the &quot;peer-to-peer Enterprise Document Rights Management for Microsoft Office and Adobe Acrobat&quot; segment (yes, this was a thing), Adhaero (now Avoco Secure) hired me for internationalization and localizability of the entire &quot;Adhaero Doc&quot; code-base.
+
+|P|work:	dt = "2000-06-15", cat = "ASP 3.0",
+			title="ASSA-ABLOY / BAB-IKON (Potsdam, Germany)",
+			link="http://web.archive.org/web/20000614032830/http://bab-ikon.de/", more=[("pic","Logo:assa-abloy.gif")],
+			content=>
+			This might have been one of the first online shops in town! Wrote server-side ASP 3.0 hooked up via SQL to an Access database and voila: B2B e-commerce for the locking / security appliances sector, complete with product pictures (exciting times) and a functioning shopping cart forwarding orders to HQ via email."

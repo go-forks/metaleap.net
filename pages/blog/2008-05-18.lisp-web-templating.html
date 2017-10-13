@@ -1,0 +1,150 @@
+<h1>Lisp web templating</h1>
+<p><a href="http://github.com/metaleap/2008_Lisp_Web_Templating">roxbase</a> is my minimal, rather simple yet quite versatile Template System for Lisp:</p>
+<p>It isn't yet feature-complete and first and foremost intended for my own use. I have only 'tested' (used) it under <a href="http://sbcl.sourceforge.net/">SBCL</a>.</p>
+{X|h2: Purpose |}
+<p>What do I mean by Template System? I wanted something similar to Edi Weitz' (of <a href="http://weitz.de/hunchentoot/">Hunchentoot</a> fame) <a href="http://weitz.de/html-template/">HTML-TEMPLATE</a>, but more akin to ASP.NET than that Perl templating module which inspired aforementioned HTML-TEMPLATE.</p>
+<p>So the basic idea is to embed Lisp code in text files (think HTML pages) and process those files so that each Lisp expression be replaced with the result of evaluating it.</p>
+{X|h2: How it works |}
+<p>The most obvious use for <strong>roxbase</strong> is within a web context. The system integrates well with Hunchentoot, <span style="text-decoration: line-through;">this website for one runs on Hunchentoot and roxbase</span>. However, you can use within any other kind of context. roxbase only provides some basic string processing logic as described below.</p>
+<p>Once you have set it up, you can feed roxbase templates such as this:</p>
+<pre>&lt;a href="<span>&lt;%= (my-url-function (random 50)) %&gt;</span>"&gt;<br /><span>&lt;%@ 'link-caption %&gt;</span><br />&lt;/a&gt;</pre>
+{X|h2: Types of template expressions |}
+<p>There are two kinds of expressions that are being processed by <strong>roxbase</strong>:</p>
+<table border="0">
+<thead>
+<tr>
+<td>Description:</td>
+<td>Example:</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Inline Expressions</strong><br/>&mdash; contains self-contained Lisp expressions.</td>
+<td><pre>Two and two makes &lt;%= (+ 2 2) %&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Mix-In Expressions</strong><br/>&mdash; mixes Lisp code and template contents arbitrarily.</td>
+<td><pre> Let's loop &lt;b&gt;ten&lt;/b&gt; times:<br /> &lt;? (dotimes (val 10) ?&gt;<br /> &lt;div&gt;<br />times &lt;i&gt;two&lt;/i&gt;: &lt;?= (* val 2) ?&gt;<br />&lt;/div&gt;<br /> &lt;? ) ?&gt;<br /> That's it, thanks! </pre></td>
+</tr>
+</tbody>
+</table>
+<p>The <code>process-template</code> function first processes all mix-in expressions it finds, then all inline expressions. You can have your mix-in or inline expressions generate new mix-in or inline expressions on the fly, making for neat and possibly hard-to-debug, macro-like, recursive templating: if as the result of processing, new mix-in or inline expressions are present in the intermediate output, it repeats this process until the template has been completely processed (tail-recursively, of course).</p>
+<blockquote>(Beware of creating endless loops when dynamically generating new mix-in or inline expressions!)</blockquote>
+{X|h2: Inline Expressions (InLexes) |}
+<p>The <code>process-template</code> function processes all inline expressions (InLexes) it finds in the template it is given. InLexes start with &lt;% (unless you change the value of <code>+inlex-start-tag+</code>) and end with %&gt; (unless you change the value of <code>+inlex-end-tag+</code>). In addition, &lt;% must be followed directly by a character that identifies the kind of InLex you're writing. The following InLexes are already built into <strong>roxbase</strong>. Needless to say, you can define your own. Only the first three InLex handlers really come with their own specific evaluation logic, the others translate into more complex InLex expressions of <strong>&lt;%=</strong> or <strong>&lt;%%</strong>.</p>
+<table border="0">
+<thead>
+<tr>
+<td>Description:</td>
+<td>Example:</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Eval:</strong> <code>&lt;%=</code><br/>Replaced with the result of evaluating the enclosed Lisp expression.</td>
+<td><pre>&lt;%= (+ (random 20) (random 40)) %&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Def:</strong> <code>&lt;%%</code><br/>No output is generated. Can be used for <strong>defun</strong>s and other definitions. Your definitions are available to <strong>Eval</strong> InLexes. In contrast to <strong>Eval</strong> InLexes, the <strong>args</strong> hashtable is not available. Pass it as an argument to your functions if you need to access the template arguments.</td>
+<td><pre> &lt;%%<br /> (defun rootpath (args)<br /> (gethash 'rox-rootpath args))<br /> %&gt;<br /> Root path of this web app:<br /> &lt;%= (rootpath) %&gt; </pre></td>
+</tr>
+<tr>
+<td><strong>Comment:</strong> <code>&lt;%!</code><br/>No output is generated. Content is ignored and discarded.</td>
+<td><pre>&lt;%! (needs-fix) %&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Load:</strong> <code>&lt;%~</code><br/>No output is generated. Load .lisp / .fasl code files. Unless an absolute path (starting with '/') is specified, the search path is considered relative to your <code>root-path</code>.</td>
+<td><pre> &lt;%~ "code/my-page-tools"<br />"code/my-utils" %&gt; </pre></td>
+</tr>
+<tr>
+<td><strong>Query:</strong> <code>&lt;%?</code><br/>If you're using Hunchentoot, replaced with the value of the URL query string parameter with the specified name.</td>
+<td><pre>&lt;%? "foo" %&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Form:</strong> <code>&lt;%&amp;</code><br/>If you're using Hunchentoot, replaced with the value of the POSTed form parameter with the specified name.</td>
+<td><pre>&lt;%&amp; "foo" %&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Session:</strong> <code>&lt;%$</code><br/>If you're using Hunchentoot, replaced with the value of the session variable with the specified name.</td>
+<td><pre>&lt;%$ "foo" %&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Header:</strong> <code>&lt;%|</code><br/>If you're using Hunchentoot, replaced with the value of the request header with the specified name.</td>
+<td><pre>&lt;%| "Accept-Content-Type" %&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Argument:</strong> <code>&lt;%@</code><br/>Replaced with the value associated with the specified key in the template's <code>args</code> hash table.</td>
+<td><pre>&lt;%@ "my-arg" %&gt;</pre> or <pre>&lt;%@ 'my-other-arg %&gt;</pre> or whatever you chose to use for a hash key in the <code>args</code> table.</td>
+</tr>
+<tr>
+<td><strong>HTML Encoder:</strong> <code>&lt;%"</code><br/>Replaced with the result of passing the enclosed Lisp expression to Hunchentoot's <code>escape-for-html</code> function.</td>
+<td><pre>&lt;pre&gt;&lt;%" "Sample code:<br />&lt;hr /&gt;" %&gt;&lt;/pre&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>JavaScript Encoder:</strong> <code>&lt;%'</code><br/>Replaced with the result of passing the enclosed Lisp expression to the <code>escape-for-js</code> function.</td>
+<td><pre>alert("&lt;%' "'Bobo'<br />said \"Hi\"." %&gt;);</pre></td>
+</tr>
+<tr>
+<td><strong>Safe Encoder:</strong> <code>&lt;%:</code><br/>Replaced with the result of passing the enclosed Lisp expression to the <code>escape-for-safe</code> function, which accepts multiple strings, concatenates them with <code>*rox-escape-char*</code> (by default, the underscore) and replaces all non-alphanumeric characters in the resulting string with said escape character.</td>
+<td><pre>&lt;a name="&lt;%: "why not?" %&gt;"&gt;<br />Anchor&lt;/a&gt;</pre></td>
+</tr>
+<tr>
+<td><strong>Sub Template:</strong> <code>&lt;%#</code><br/>Replaced with the result of processing the specified template with the specified arguments (those will be available to the template in its <code>args</code> hash table).</td>
+<td><pre>&lt;%# "foot.htm"<br />("msg" "&copy;2008")<br />("color" "blue") %&gt;</pre></td>
+</tr>
+</tbody>
+</table>
+{X|h2: Getting started |}
+<p>Before you can use it, <strong>roxbase</strong> needs to be initialized. Call the following function:</p>
+<h3>server-startup</h3>
+<ul>
+<li><code>name</code> &mdash; This could be the name of your package or any other name. If you want <code>server-startup</code> to start a Hunchentoot instance, this will be the name of your server.</li>
+<li><code>port</code> &mdash; If you do not want <code>server-startup</code> to start a Hunchentoot instance, use <code>NIL</code>; otherwise, specify the port of your Hunchentoot instance.</li>
+<li><code>pathname-root</code> &mdash; the absolute path of the directory serving as the base path for other relative path specifications used within templates or during a template processing request.</li>
+<li> <code>script-path-handler</code>: designates a function that accepts three arguments and returns the path (absolute or relative to <code>pathname-root</code>) to the file that should be processed by <strong>roxbase</strong>.
+<ul>
+<li><code>script-name</code> &mdash; the request path for the processing request</li>
+<li><code>args</code> &mdash; the Arguments hash table for the processing request (template processing arguments are described further below)</li>
+<li><code>subtemplate-p</code> &mdash; <code>T</code> if this processing request was invoked recursively during a parent template processing.</li>
+</ul>
+</li>
+<li><code>&amp;key foldername-static</code> &mdash; the path (relative to <code>pathname-root</code>) for files that should not be template-processed by <strong>roxbase</strong>.</li>
+<li><code>&amp;key debug</code> &mdash; unless <code>port</code> is <code>NIL</code>, sets the Hunchentoot variables <code>*show-lisp-errors-p*</code> and <code>*show-lisp-backtraces-p*</code> to the specified value (should be Boolean &mdash; <code>NIL</code> or <code>T</code>).</li>
+<li><code>&amp;key scriptpackage</code> &mdash; unless <code>NIL</code>, all &lt;%% directives will be prepared with an <code>(in-package)</code> call before processing, where the package is either the value of <code>scriptpackage</code> or of <code>name</code>, if <code>scriptpackage</code>'s value is <code>T</code>.</li>
+</ul>
+<p>As described above, the <code>port</code> argument implicitly controls whether <code>server-startup</code> starts up and returns a new Hunchentoot server instance. If this is the case, <strong>roxbase</strong> sets up its own Hunchentoot request handlers that either simply return a file unprocessed if the request path fits the directory specification (relative to <code>pathname-root</code>) in <code>foldername-static</code>, otherwise, it invokes the specified <code>script-path-handler</code> function and processes the file represented by the path (relative to <code>pathname-root</code>) returned by the function call.</p>
+<h3>server-shutdown</h3>
+<p>After you're done with your template processing, you can call the <code>server-shutdown</code> function to clean things up. If your previous <code>server-startup</code> call initialized a new Hunchentoot server instance (that is still stored in the global variable *rox-server*), the service is stopped. Afterwards, the following global hash tables are cleared:</p>
+<ul>
+<li><code>*rox-inlex-cache*</code> &mdash; contains cached compiled equivalents of successfully parsed inline expressions (InLexes)</li>
+<li><code>*rox-inlex-handlers*</code> &mdash; contains all known InLex handlers (InLexes and InLex handlers are described further below); pre-populated with the <strong>roxbase</strong> system InLex handlers by <code>server-startup</code></li>
+<li> <code>*rox-settings*</code> &mdash; pre-populated by <code>server-startup</code> with the following default values:
+<ul>
+<li> <code>'fn-html-condition-handler</code> (a function designator, by default <code>#'default-html-condition-handler</code>, that produces output to indicate an error in place of a processed InLex and accepts three arguments:
+<ul>
+<li><code>condtype</code> &mdash; either <code>"EVAL"</code>, <code>"COMPILE"</code> or <code>"RUNTIME"</code>, depending on when the InLex error was encountered</li>
+<li><code>condsrc</code> &mdash; the complete InLex that caused the error</li>
+<li><code>condmsg</code> &mdash; the error message)</li>
+</ul>
+</li>
+<li> and <code>'eval-compile-cache-handlers-p</code> (the string of InLex handler identifiers whose expressions should be compiled and cached in <code>*rox-inlex-cache*</code>). </li>
+</ul>
+</li>
+</ul>
+{X|h2: Invoking template processing requests |}
+<h3>handle-request, create-args-table, process-template, load-template</h3>
+<p>If you're using <strong>roxbase</strong> with Hunchentoot, each non-static request is handled by <code>handle-request</code>, which returns a string that is the result of processing the file indicated by the <code>script-path-handler</code> you specified when you called <code>server-startup</code>. You can call <code>handle-request</code> yourself, it has the same signature as a <code>script-path-handler</code>. In case you ever need to do just that, pass the following arguments:</p>
+<ul>
+<li> <code>script-name</code> &mdash; pass any value that your <code>script-path-handler</code> will transform into the path (absolute or relative to <code>pathname-root</code>) of the file to be processed </li>
+<li> <code>args</code> &mdash; pass a hash table freshly created by the <code>create-args-table</code> function:
+<ul>
+<li><code>pathname-root</code> &mdash; just pass the same path name you passed <code>server-startup</code></li>
+<li><code>script-path-handler</code> &mdash; just pass the same function you passed <code>server-startup</code>.</li>
+<li><code>parent-args</code> &mdash; just pass <code>NIL</code></li>
+<li><code>root-args</code> &mdash; just pass <code>NIL</code>.</li>
+</ul>
+</li>
+<li> <code>subtemplate-p</code> &mdash; just pass <code>NIL</code> (this should only ever be <code>T</code> if called automatically from a parent template processing request) </li>
+</ul>
+<p>If <code>handle-request</code> finds the specified file, it loads all its raw, unprocessed string contents into memory and passes it to the <code>process-template</code> and returns the result of that call; otherwise, it returns <code>NIL</code> and, when using Hunchentoot, sends a 404 status code prior to returning.</p>
+<p>Unless called manually, <code>handle-request</code> is called <strong>either</strong> in response to a Hunchentoot web request or by the <code>load-template</code> macro, which is a syntactically compact way to recursively load sub-templates during a parent template processing request.</p>

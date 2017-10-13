@@ -1,0 +1,6 @@
+<h1>Hashing uints in Go</h1>
+<p>Needed to hash a set of 3 unsigned integers into one integer value uniquely identifying-representing that particular sequence of uints, to be used as a "hash key" in a <code>map[int]sometype</code>..</p>
+<p>Simple arithmetics (add or mult) are out to uniquely hash different combinations: the set 1,2,4 should produce a different hash key than 1,4,2 and 2,1,4 and 2,4,1 and 4,1,2 and 4,2,1.</p>
+<p>Found Robert Jenkins' 96 bit Mix Function with a neat source snippet right there (Java). Implemented in Go and seems to work even though I'm not sure if Golangs <code>&gt;&gt;</code> right-shift operator (spec'd as <code>integer &gt;&gt; unsigned integer</code>) really works like Java's <code>&gt;&gt;&gt; "unsigned right shift"</code>...</p>
+{X|h2: Update: |}
+<p>Actually by now it dawned on me I can just use a <code>[3]uint</code> as a hash key in Golang here, which is fine in this use-case. Simplicity FTW!</p><p>But if you're curious about this topic, here's an <a href="http://programmers.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed/145633#145633">incredible testing and comparison of hashing algos</a>.</p>

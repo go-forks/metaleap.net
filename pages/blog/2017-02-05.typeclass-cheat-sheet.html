@@ -1,0 +1,168 @@
+{%P|ftor=Functor &mdash; &lt;$&gt; , &lt;$|%}
+{%P|appl=Applicative &mdash; pure , &lt;*&gt; , &lt;* , *&gt;|%}
+<h1>HasPlained: Functor &amp; Applicative</h1>
+<p>
+	For the "begintermediate" Funk(y-nota)tional Programmer, until more auto-math-ic intuition sets in, a quick-lookup cheat-sheet: examples of
+	the built-in common standard instances for these two foundational Haskell typeclasses (for when GHCi isn't at hand, which it should never be).
+</p>
+{X|h2: {P|ftor|} |}
+<p>A {X|c:Functor|}, to "get mapped over", declares {X|c:fmap :: (a&rarr;b) &rarr; (f a) &rarr; (f b)|} aka. {X|c:&lt;$&gt;|}
+(this flipped being {X|c:&gt;~|} in my code-bases) with laws:</p>
+<ul>
+	<li>{X|c:id &lt;$&gt; foo|} &equiv; {X|c:id foo|}</li>
+	<li>{X|c: ((f &lt;$&gt;).(g &lt;$&gt;)) foo |} &equiv; {X|c: f.g &lt;$&gt; foo |}</li>
+	<li>{X|c: baz &lt;$ foo |} &equiv; {X|c: (const baz) &lt;$&gt; foo |}</li>
+</ul>
+{X|h2: {P|appl|} |}
+<p>An {X|c:Applicative|} (also always a {X|c:Functor|}) "declares a functor with extra laws and operations to enable more/structured functorial
+computations". Meaning approximately,</p>
+<ul>
+	<li>{X|c:pure|} brings a value {X|c:a|} into the functor {X|c:f|} as {X|c: f a|}, and</li>
+	<li>{X|c:&lt;*&gt;|} allows applying some function-in-the-functor {X|c:f (a-&gt;b)|} (often a partial application obtained from an earlier {X|c:&lt;$&gt;|})
+	to such a value-in-the-functor {X|c:f a|} to obtain the returned such value-in-the-functor {X|c:f b|}.</li>
+	<li>{X|c:&lt;**&gt;|} it not a {X|c:flip|} of {X|c:&lt;*&gt;|} but of some deeper inner {X|c:$|}, ie. "convoluted &times;2"</li>
+	<li>{X|c:*&gt;|} discards left-hand side result, {X|c:&lt;*|} same for right-hand but only because:</li>
+	<li>{X|c:(&lt;* func_in_functor)|} is <b>not</b> a {X|c:flip|} of {X|c:*&gt;|} but of the original function encapsulated by
+	{X|c:func_in_functor|}!</li>
+</ul>
+<p>All a tad too knotty for my taste, but the basics still need to be understood for comprehending Haskell code-bases. As for the
+<a href="http://en.wikibooks.org/wiki/Haskell/Applicative_functors#Applicative_functor_laws">laws</a>.. similarly labyrinthine,
+mostly needed when writing instances (such as on top of a custom {X|c:Functor|}) or for reasoning about existing Applicative-style code.</p>
+
+
+
+{X|h2:Maybe|}
+<p>Given {X|c:dis = Nothing|} and {X|c:dat = Just "foo"|}</p>
+<h3>{P|ftor|}</h3>
+<ul>
+	<li>{X|c:dis&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; dis|} &equiv; {X|c:fmap reverse dis|} &equiv; {X|c:Nothing|}</li>
+	<li>{X|c:dat&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; dat|} &equiv; {X|c:fmap reverse dat|} &equiv; {X|c:Just "oof"|}</li>
+	<li>{X|c:"baz" &lt;$ dis|} &equiv; {X|c:Nothing|}</li>
+	<li>{X|c:"baz" &lt;$ dat|} &equiv; {X|c:Just "baz"|}</li>
+</ul>
+<h3>{P|appl|}</h3>
+<p>Further also given {X|c:cmp = compare &lt;$&gt; dem|} where {X|c:dem = (pure "bar") :: Maybe String|} &equiv; {X|c:dem = Just "bar"|}</p>
+<ul>
+	<li>{X|c:cmp &lt;*&gt; dis|} &equiv; (here) {X|c:dis &lt;**&gt; cmp|} &equiv; {X|c:Nothing|}</li>
+	<li>{X|c:cmp &lt;*&gt; dat|} &equiv; (here) {X|c:dat &lt;**&gt; cmp|} &equiv; {X|c:Just LT|}</li>
+	<li>{X|c:cmp *&gt; dis|} &equiv; {X|c:dis &lt;* cmp|} &equiv; {X|c:Nothing|}</li>
+	<li>{X|c:cmp *&gt; dat|} &equiv; {X|c:dat &lt;* cmp|} &equiv; {X|c:Just "foo"|}</li>
+	<li>{X|c:Just 10 &lt;* Just "20"|} &equiv; {X|c:Just 10|}</li>
+	<li>{X|c:Just 10 *&gt; Just "20"|} &equiv; {X|c:Just "20"|}</li>
+	<li>{X|c:Just _ *&gt; Nothing|} &equiv; {X|c:Nothing *&gt; Just _|}
+		&equiv; {X|c:Just _ &lt;* Nothing|} &equiv; {X|c:Nothing &lt;* Just _|} &equiv; {X|c:Nothing|}</li>
+</ul>
+
+
+
+{X|h2:Either t|}
+<p>Given {X|c:dis = Left "baz"|} and {X|c:dat = Right "foo"|}</p>
+<h3>{P|ftor|}</h3>
+<ul>
+	<li>{X|c:dis&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; dis|} &equiv; {X|c:fmap reverse dis|} &equiv; {X|c:Left "baz"|}</li>
+	<li>{X|c:dat&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; dat|} &equiv; {X|c:fmap reverse dat|} &equiv; {X|c:Right "oof"|}</li>
+	<li>{X|c:"bar" &lt;$ dis|} &equiv; {X|c:Left "baz"|}</li>
+	<li>{X|c:"bar" &lt;$ dat|} &equiv; {X|c:Right "bar"|}</li>
+</ul>
+<h3>{P|appl|}</h3>
+<p>Further also given {X|c:cmp = compare &lt;$&gt; dem|} where {X|c:dem = (pure "bar") :: Either String String|} &equiv; {X|c:dem = Right "bar"|}</p>
+<ul>
+	<li>{X|c:cmp &lt;*&gt; dis|} &equiv; (here) {X|c:dis &lt;**&gt; cmp|} &equiv; {X|c:Left "baz"|}</li>
+	<li>{X|c:cmp &lt;*&gt; dat|} &equiv; (here) {X|c:dat &lt;**&gt; cmp|} &equiv; {X|c:Right LT|}</li>
+	<li>{X|c:cmp *&gt; dis|} &equiv; {X|c:dis &lt;* cmp|} &equiv; {X|c:Left "baz"|}</li>
+	<li>{X|c:cmp *&gt; dat|} &equiv; {X|c:dat &lt;* cmp|} &equiv; {X|c:Right "foo"|}</li>
+	<li>{X|c:Right 10 &lt;* Right "20"|} &equiv; {X|c:Right 10|}</li>
+	<li>{X|c:Right 10 *&gt; Right "20"|} &equiv; {X|c:Right "20"|}</li>
+	<li>{X|c:Left anything *&gt; _|} &equiv; {X|c:_ *&gt; Left anything|}
+		&equiv; {X|c:Left anything &lt;* _|} &equiv; {X|c:_ &lt;* Left anything|} &equiv; {X|c:Left anything|}</li>
+</ul>
+
+
+
+{X|h2:(t,)|}
+<p>Given {X|c:disndat = ("baz","foo")|}</p>
+<h3>{P|ftor|}</h3>
+<ul>
+	<li>{X|c:disndat&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; disndat|} &equiv; {X|c:fmap reverse disndat|} &equiv; {X|c:("baz","oof")|}</li>
+	<li>{X|c:"bar" &lt;$ disndat|} &equiv; {X|c:("baz","bar")|}</li>
+</ul>
+<h3>{P|appl|}</h3>
+<p>Further also given {X|c:cmp = compare &lt;$&gt; dem|} where {X|c:dem = (pure "bar") :: (String,String)|} &equiv; {X|c:dem = ("","bar")|}</p>
+<ul>
+	<li>{X|c:cmp &lt;*&gt; disndat|} &equiv; (here) {X|c:disndat &lt;**&gt; cmp|} &equiv; {X|c:("baz",LT)|}</li>
+	<li>{X|c:cmp *&gt; disndat|} &equiv; {X|c:disndat &lt;* cmp|} &equiv; {X|c:("baz","foo")|}</li>
+	<li>{X|c:("a",'b') &lt;* ("c",'d')|} &equiv; {X|c:("ac",'b')|}</li>
+	<li>{X|c:("a",'b') *&gt; ("c",'d')|} &equiv; {X|c:("ac",'d')|}</li>
+	<li>{X|c:(GT,True) &lt;* (LT,False)|} &equiv; {X|c:(GT,True)|}</li>
+	<li>{X|c:(GT,True) *&gt; (LT,False)|} &equiv; {X|c:(GT,False)|}</li>
+</ul>
+
+
+
+{X|h2:[]|}
+<p>Given {X|c: dis = [] |} and {X|c: dat = ["foo","baz"] |}</p>
+<h3>{P|ftor|}</h3>
+<ul>
+	<li>{X|c:dis&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; dis|} &equiv; {X|c:fmap reverse dis|} &equiv; {X|c:[]|}</li>
+	<li>{X|c:dat&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; dat|} &equiv; {X|c:fmap reverse dat|} &equiv; {X|c:["oof","zab"]|}</li>
+	<li>{X|c:"bar" &lt;$ dis|} &equiv; {X|c:[]|}</li>
+	<li>{X|c:"bar" &lt;$ dat|} &equiv; {X|c:["bar","bar"]|}</li>
+</ul>
+<h3>{P|appl|}</h3>
+<p>Further also given {X|c:cmp = compare &lt;$&gt; dem|} where {X|c:dem = (pure "dem") :: [String]|} &equiv; {X|c:dem = ["dem"]|}</p>
+<ul>
+	<li>{X|c:cmp &lt;*&gt; dis|} &equiv; (here) {X|c:dis &lt;**&gt; cmp|} &equiv; {X|c:[]|}</li>
+	<li>{X|c:cmp &lt;*&gt; dat|} &equiv; (here) {X|c:dat &lt;**&gt; cmp|} &equiv; {X|c:[LT,GT]|}</li>
+	<li>{X|c:cmp *&gt; dis|} &equiv; {X|c:dis &lt;* cmp|} &equiv; {X|c:[]|}</li>
+	<li>{X|c:cmp *&gt; dat|} &equiv; {X|c:dat &lt;* cmp|} &equiv; {X|c:["foo","baz"]|}</li>
+	<li>{X|c:[1,2] &lt;* [3,4]|} &equiv; {X|c:[1,1,2,2]|}</li>
+	<li>{X|c:[1,2] &lt;* [3,4,5]|} &equiv; {X|c:[1,1,1,2,2,2]|}</li>
+	<li>{X|c:[1,2] &lt;* [3,4,5,6]|} &equiv; {X|c:[1,1,1,1,2,2,2,2]|}</li>
+	<li>{X|c:[1,2,3,4] *&gt; [5,6]|} &equiv; {X|c:[5,6,5,6,5,6,5,6]|}</li>
+	<li>{X|c:"yo" *&gt; "foo"|} &equiv; {X|c:"foofoo"|}</li>
+	<li>{X|c:"yo" &lt;* "fee"|} &equiv; {X|c:"yyyooo"|}</li>
+	<li>{X|c:"zoom" *&gt; "ya"|} &equiv; {X|c:"yayayaya"|}</li>
+	<li>{X|c:"zoom" &lt;* "ya"|} &equiv; {X|c:"zzoooomm"|}</li>
+	<li>{X|c:[] *&gt; _|} &equiv; {X|c:_ *&gt; []|}
+		&equiv; {X|c:[] &lt;* _|} &equiv; {X|c:_ &lt;* []|} &equiv; {X|c:[]|}</li>
+	<li>{X|c:[reverse , id] &lt;*&gt; ["foo","bar"]|} &equiv; {X|c:["oof","rab","foo","bar"]|}</li>
+</ul>
+
+
+
+{X|h2: IO|}
+<p>Given {X|c: dat = (pure "foo") :: IO String |}</p>
+<h3>{P|ftor|}</h3>
+<ul>
+	<li>{X|c:dat&gt;~reverse|} &equiv; {X|c:reverse&lt;$&gt; dat|} &equiv; {X|c:fmap reverse dat|} &equiv; {X|c:dat >>= (pure . reverse)|} &equiv;
+	{X|c:(pure "oof") :: IO String|}</li>
+	<li>{X|c:"baz" &lt;$ dat|} &equiv; {X|c:(pure "baz") :: IO String|}</li>
+</ul>
+<h3>{P|appl|}</h3>
+<p>Further also given {X|c: dis = (pure "") :: IO String |} and {X|c:cmp = compare &lt;$&gt; dem|} where {X|c:dem = (pure "dem") :: IO String|}</p>
+<ul>
+	<li>{X|c:cmp &lt;*&gt; dis|} &equiv; (here) {X|c:dis &lt;**&gt; cmp|} &equiv; {X|c:(pure GT) :: IO Ordering|}</li>
+	<li>{X|c:cmp &lt;*&gt; dat|} &equiv; (here) {X|c:dat &lt;**&gt; cmp|} &equiv; {X|c:(pure LT) :: IO Ordering|}</li>
+	<li>{X|c:cmp *&gt; dis|} &equiv; {X|c:dis &lt;* cmp|} &equiv; {X|c:(pure "") :: IO String|}</li>
+	<li>{X|c:cmp *&gt; dat|} &equiv; {X|c:dat &lt;* cmp|} &equiv; {X|c:(pure "foo") :: IO String|}</li>
+	<li>{X|c:dis *&gt; dat|} &equiv; {X|c:dat &lt;* dis|} &equiv; {X|c:(pure "foo") :: IO String|}</li>
+	<li>{X|c:dat *&gt; dis|} &equiv; {X|c:dis &lt;* dat|} &equiv; {X|c:(pure "") :: IO String|}</li>
+</ul>
+
+
+
+{X|h2: t -&gt; |}
+<p>Given {X|c: dat = "foo-bar" |} and {X|c: dis = [1,2,3,4] |} or {X|c: []|} or {X|c:[True]|} or any other list..</p>
+<h3>{P|ftor|}</h3>
+<ul>
+	<li>{X|c:(tail&gt;~reverse) dat|} &equiv; {X|c:(reverse &lt;$&gt; tail) dat|} &equiv; {X|c:(fmap reverse tail) dat|} &equiv; {X|c:(reverse . tail) dat|}
+	&equiv; {X|c:(tail~.reverse) dat|} &equiv; {X|c:"rab-oo"|}</li>
+	<li>{X|c:(reverse&gt;~tail) dat|} &equiv; {X|c:(tail &lt;$&gt; reverse) dat|} &equiv; {X|c:(fmap tail reverse) dat|} &equiv; {X|c:(tail . reverse) dat|}
+	&equiv; {X|c:(reverse~.tail) dat|} &equiv; {X|c:"ab-oof"|}</li>
+	<li>{X|c:(reverse&gt;~head) dat|} &equiv; {X|c:(head &lt;$&gt; reverse) dat|} &equiv; {X|c:(fmap head reverse) dat|} &equiv; {X|c:(head . reverse) dat|}
+	&equiv; {X|c:(reverse~.head) dat|} &equiv; {X|c:'r'|}</li>
+	<li>{X|c: (tail &lt;$ head) dis dat |} &equiv; {X|c:tail dat|} &equiv; {X|c:"oo-bar"|}</li>
+	<li>{X|c: (head &lt;$ tail) dis dat |} &equiv; {X|c:head dat|} &equiv; {X|c:'f'|}</li>
+</ul>
+<h3>{P|appl|}</h3>
+<p>Really not ready to go there..</p>

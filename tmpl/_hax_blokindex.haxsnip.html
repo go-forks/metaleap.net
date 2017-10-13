@@ -1,0 +1,17 @@
+vars = [("bname","")],
+content=>
+<h1>{B|title:{%bname%}|}</h1>
+<p>{B|desc:{%bname%}|}</p>
+<span class="ml-feed-{%bname%}">
+{X|FeedView:
+	feeds=["{%bname%}"] , groups = [], xVars =
+	[	("L", Wrap "href=\"" "\"" (F "link"))
+	,	("C", DtFormat "dtf_Long" (F "cat"))
+	,	("t", F "title")
+	,	("P", X (PrefixIf "FeedAutoIcon:" (F "<img>src")))
+	,	("D", StripMarkup (F "content"))
+	]
+
+|}
+
+</span>

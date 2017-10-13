@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /life.html
+Disallow: /life*
+Disallow: /files/img/life/
+Sitemap: /sitemap.xml

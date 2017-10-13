@@ -1,0 +1,11 @@
+<h1>Collada 1.4.1 to 1.5</h1>
+<p>My <a href="http://github.com/metaleap/go-ngine">go:ngine</a> supports only one file format for importing assets: Collada. The format is quite expressive, going way beyond mere geometry meshes..</p>
+<p>What's more, support across a wide range of industry tools for exporting to (or converting to) Collada is very good. (There's even a <a href="http://forum.unity3d.com/threads/148456-RELEASED-COLLADA-Exporter-v1.1-now-available">Collada exporter plug-in for Unity</a>.)</p>
+
+{X|h2: The catch |}
+<p>I find version 1.5 of the Collada specification far superior to its previous versions, however most tool support out there is still based on version 1.4.1. While the versions are very similar, there are a small number of breaking changes between them. Rather than writing two "almost-but-not-fully-identical" importers, I decided to have go:ngine convert 1.4.1 documents to 1.5 on-the-fly upon import.</p>
+
+{X|h2: How to run the converter |}
+<p>If you're not a Go programmer or otherwise not interested in go:ngine itself, this conversion code is also available as a command-line program. Should you need it, <a href="http://golang.org/dl/">install Go</a>, then do a <code>go get github.com/metaleap/go-ngine</code>, then:</p>
+<pre>go build $GOPATH/src/github.com/metaleap/go-ngine/___old2013/_tools/assettools/ng-collada-141-to-15/main.go</pre>
+<p>That's it. Haven't gotten around to providing pre-built binaries for Windows, Linux and OSX, 32-bit and 64-bit each... but installing Go on your system is non-intrusive and harmless anyway. After building the command-line program, you can uninstall Go if you like.</p>

@@ -1,0 +1,113 @@
+<h1>Dissecting PureScript's transpiled type-classes</h1>
+<p>
+	Objective: to understand how an <em>ML-ish</em>-to-imperative/OO code generator (such as
+	&mdash;in this example&mdash; the PureScript-to-JavaScript transpiler) represents functional type-classes
+	(FP's approximate use-case equivalent to OO's interfaces).
+</p>
+{X|h2: Minimal PureScript project |}
+<p id="ShowCls.purs"><b>src/Mini/ShowCls.purs</b> &mdash; we recreate the well-known <code>Show</code> type-class ("interface"),
+adding a default instance ("implementation") for <code>String</code>:</p>
+<pre>
+module Mini.ShowCls where
+import Prelude
+
+class <b>MyShow</b> a where
+    <b>showMe</b> :: a -> String
+
+instance myShowStr :: <b>MyShow</b> String where
+    <b>showMe</b> s =
+        "\"" <> s <> "\""
+</pre>
+<p id="ShowImpl.purs"><b>src/Mini/ShowImpl.purs</b> &mdash; a custom <code>Email</code> new-type of <code>String</code> and
+adding its own instance of all <code>ShowMe</code> methods (just <code>showMe</code>, as per above.)</p>
+<pre>
+module Mini.ShowImpl where
+import Mini.ShowCls
+
+newtype <b>Email</b> = <b>At</b> String
+
+instance showMail :: <b>MyShow Email</b> where
+    <b>showMe</b> (<b>At</b> addr) =
+        <b>showMe</b> addr
+</pre>
+<p id="Main.purs">
+	<b>src/Main.purs</b> &mdash; user code importing both:
+</p>
+<pre>
+module Main where
+import Mini.ShowCls
+import Mini.ShowImpl
+import Prelude
+import Control.Monad.Eff
+import Control.Monad.Eff.Console
+
+main :: forall e. Eff (console :: CONSOLE) Unit
+main =
+    let
+        mail :: <b>Email</b>
+        mail = <b>At</b> "baz@foo.bar"
+        shown = <b>showMe</b> mail
+    in do
+        log shown
+</pre>
+{X|h2: The generated JS code |}
+<p id="Main.js"><b>output/Main/index.js</b>, imports/exports stripped:</p>
+<pre>
+var main = (function () {
+    var shown = Mini_ShowCls.<b>showMe</b>(Mini_ShowImpl.<b>showMail</b>)("baz@foo.bar");
+    return Control_Monad_Eff_Console.log(shown);
+})();
+</pre>
+<ul>
+	<li>The <code>At</code> new-type data constructor call has been erased, just the underlying string remains &mdash;
+		as is proper for all single-constructor, single-arg (ie. all) new-types.</li>
+	<li>
+		Our generic call to the <code>MyShow</code> type-class' <code>showMe</code> method gets turned into 2 calls:
+		<ol>
+			<li>first one to obtain the applicable concrete method implementation as a function &mdash; apparently by
+				passing the imported JS representation object of the custom instance directly to the type-class;</li>
+			<li>secondly, the actual call to that retrieved concrete "implementing" function.</li>
+		</ol>
+	</li>
+</ul>
+<p id="ShowImpl.js"><b>output/<b>Mini/ShowImpl</b>/index.js</b></p>
+<pre>
+var <b>At</b> = function (x) {
+    return x;
+};
+var <b>showMail</b> = new Mini_ShowCls.<b>MyShow</b>(function (v) {
+    return Mini_ShowCls.<b>showMe</b>(Mini_ShowCls.<b>myShowStr</b>)(v);
+});
+</pre>
+<ul>
+	<li>The <code>At</code> new-type constructor of <code>Email</code> is still being generated, even though its usage was erased (see above).
+		Not sure why, there's probably a good reason.</li>
+	<li>This exports the custom <code>showMail</code> instance that the transpiler was smart enough to reference explicitly in <b>Main</b> above.</li>
+	<li>We see that such a custom instance is produced by obtaining a representation object from <code>Mini_ShowCls.MyShow(..)</code>, passing
+	presumably all concrete "implementing" functions that comprise this instance as constructor arguments.</li>
+	<li>As this representation object is exported, it is imported in <b>Main</b> to be passed back in to <b>ShowCls</b>'s generic one-stop
+		<code>showMe</code> exported function.</li>
+	<li>As this just defers to the default <code>showMe</code> instance for <code>String</code>, the compiler figured out (just like above in <b>Main</b>)
+		exactly what underlying concrete function implementation (<code>myShowStr</code>) to pass on to the embedded <code>showMe</code> call.</li>
+</ul>
+<p id="ShowCls.js"><b>output/<b>Mini/ShowCls</b>/index.js</b></p>
+<pre>
+var <b>MyShow</b> = function (showMe) {
+    this.<b>showMe</b> = showMe;
+};
+var <b>showMe</b> = function (dict) {
+    return dict.showMe;
+};
+var <b>myShowStr</b> = new <b>MyShow</b>(function (s) {
+    return "\"" + (s + "\"");
+});
+</pre>
+<ul>
+	<li>As already presumed above, the <code>MyShow</code> type-class turns into a simple constructor of a representation object with
+		named methods, initialized in order from the same-named arguments.</li>
+	<li>We now see how and why all generic <code>showMe</code> calls work, and this function seems utterly superfluous, but probably
+		this way makes it more elegant to code-gen? Well, we haven't touched type-variables and such here at all.</li>
+	<li>The pre-defined default <code>MyShow</code> instance for <code>String</code>s (namely, <code>myShowStr</code>) is being exported,
+		show-casing the creation of an instance's representation object via the <code>MyCode</code> constructor with the concrete function
+		implementation passed in.</li>
+</ul>

@@ -1,0 +1,44 @@
+<h1>HasPlained: Monoids</h1>
+{T|Hasplained |}
+<p>Just happened upon these illuminative insights for <a href="https://www.reddit.com/r/haskell/comments/5kfufv/help_me_in_developing_an_intuition_for_monoid/">"Developing an intuition for Monoid"</a> &mdash; here are the essentials, distilled and/or paraphrased-for-clarity.</p>
+<p><b>Just a fancy moniker for any sets of values with both:</b></p>
+<ul>
+	<li>a closed binary operation <code>x &lt;&gt; y</code> (or <i>mappend</i>) that is associative ie. <code>(x &lt;&gt; (y &lt;&gt; z)) == ((x &lt;&gt; y) &lt;&gt; z)</code>,</li>
+	<li>and an identity value <code>id</code> (or <i>mempty</i>, or call it <i>nil</i> / <i>default</i> / <i>unit</i> if you will.. you get the idea) such that <code>(x &lt;&gt; id) == (id &lt;&gt; x) == x</code></li>
+</ul>
+
+{X|h2: Examples |}
+<ul>
+	<li>numbers: for all values, <code>(n + 0) == n</code><br/>&mdash; so <code>id = 0</code> with <code>(&lt;&gt;) = (+)</code> is a monoid for numbers</li>
+	<li>numbers: for all values, <code>(n &times; 1) == n</code><br/>&mdash; so <code>id = 1</code> with <code>(&lt;&gt;) = (&times;)</code> is a monoid for numbers</li>
+	<li>booleans: for all values, <code>(b || False) == b</code><br/>&mdash; so <code>id = False</code> with <code>(&lt;&gt;) = (||)</code> is a monoid for booleans</li>
+	<li>booleans: for all values, <code>(b &amp;&amp; True) == b</code><br/>&mdash; so <code>id = True</code> with <code>(&lt;&gt;) = (&amp;&amp;)</code> is a monoid for booleans</li>
+	<li>lists / strings: for all strings, <code>(s ++ "") == s</code>; for all lists, <code>(l ++ []) == l</code><br/>&mdash; so <code>id = []</code> / <code>id = ""</code> with <code>(&lt;&gt;) = (++)</code> is a monoid for lists/strings</li>
+</ul>
+
+{X|h2: Distiller from [X] to X |}
+<p>
+	So intuitively, if there's an obvious (associative) combining function <code>&lt;&gt;</code> from <i>both</i> [X]-to-X <i>and</i> []-to-X<sub>default/empty</sub> (where also <code>X == (X &lt;&gt; X<sub>default/empty</sub>)</code>, <i>always</i>) &mdash; then that &lt;&gt; with that X<sub>default/empty</sub> make a monoid for all X.
+</p>
+<ul>
+	<li>Ie. when asking for a way to combine [X] to X, this also needs to give an answer for the empty list [], which implies there's a default value you can assign to the empty list: this is the difference between a monoid and a semigroup.</li>
+	<li><a href="https://www.reddit.com/r/haskell/comments/5kfufv/help_me_in_developing_an_intuition_for_monoid/dbo3bwl/">More:</a> on <code>()</code>, why booleans/numbers <i>can</i> be seen as monoids but <i>aren't <code>Monoid</code> instances by default</i>, etc..</li>
+</ul>
+
+{X|h2: Foldable / containers |}
+<p>
+	Given a <code>Data.Foldable</code> instance for some container (list, map, etc..), you can write a generic <code>fold</code> function that only takes one argument (the container).
+</p>
+<ul>
+	<li>If you have a value of a type <code>f a</code> (with <code>f</code> an instance of <code>Foldable</code> and <code>a</code> an instance of <code>Monoid</code>), then instead of <code>foldr someFunc startVal container</code> you can just write: <code>fold container</code>.</li>
+	<li>The <code>Foldable</code> part is what's important for the container. <code>Monoid</code> has no concept of a "container" whatsoever, it simply provides a "zero" value and a way to combine two values together.</li>
+	<li><i>I want to emphasize that it's the operator that matters, not the type</i> &mdash; <a href="https://www.reddit.com/r/haskell/comments/5kfufv/help_me_in_developing_an_intuition_for_monoid/dbnnq9s/">more..</a></li>
+</ul>
+<p><i>
+	So at the end of the day, this all just means that monoids serve as the language used by folds to tear down bigger structures. What exactly that language expresses is up to the <code>Monoid</code>, and what it means to be torn down is up to the instance of <code>Foldable</code>.
+</i></p>
+
+{X|h2: Remarks |}
+<p>
+	Grasping all of the above, we can <i>now</i> parse <a href="http://dev.stephendiehl.com/hask/#algebraic-relations">Diehl</a>: <i>&laquo;A monoid is a combination of a unit and a single associative operation over a set of values.&raquo;</i> So far, I haven't encountered (neither before nor upon having absorbed the above findings) any pressing need of defining and wiring up custom <code>Monoid</code> instances for explicit use with any <code>Foldable</code>s (or any other purpose), but it'll probably come up some obscure way when least expected.
+</p>

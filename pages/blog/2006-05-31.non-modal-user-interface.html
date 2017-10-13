@@ -1,0 +1,24 @@
+<h1>Non-modal GUI</h1>
+{T|AlbumIncl|}
+{T|AlbumDyn|}
+{%P|old=http://dualogy.blogs.com/phil/2006/05/nonmodal_user_i.html|%}
+{T|OldStuff|}
+
+<p>The user interface of the new product that I am currently working on will be almost completely non-modal:</p>
+<p>This is of course only a minor feature, a goodie, rather than its unique value proposition! ;) In fact, this has evolved by accident rather than by design. In the process of designing the software (an activity that is not separate from development in my case) quite a few instances already occurred, and continue to occur, where by conventional wisdom I would just pop up a message box, a confirmation dialog, or design a small dialog window for details of the current user task.</p>
+<p>Message boxes and dialogs break the user flow and take away the system focus (annoying when you scroll through a list or type text), and so I (and many users) despise them.</p>
+
+{X|h2: Are-you-sure prompts |}
+<p>For confirmations where I really want the user to think twice (very rare, I usually tend to trust the user's decision if he already took the trouble to click a button...), drop-down menus very nicely replace yes/no confirmation message boxes:</p>
+{X|Pic: nm_01_1.png Are-you-sure prompts |}
+
+{X|h2: Information bars |}
+<p>I implemented flashing information bars (as can be found in the current generation of Internet Explorer and Mozilla Firefox web browsers) which pop up at the bottom of the application window for a couple of other events that would typically produce a message box or dialog:</p>
+{X|Pic: nm_02_1.png Information bars |}
+
+{X|h2: Wizards |}
+<p>More complex dialogs (such as Options) and wizards are completely integrated into the document window management of the application and are thus non-modal, too:</p>
+{X|Pic: nm_03.png Wizards |}
+
+{X|h2: Standard dialogs |}
+<p>I have no plans to waste time replacing standard dialogs such as Open File, Save File, Print, Page Setup or Print Preview at this point. There would be a very real risk that usability might suffer unduly (people already know how to operate these dialogs) and my intention is not to be religious about non-modal user interfaces, but to avoid breaking the user flow or stealing the focus. The product is meant as a productivity booster for a certain type of task, it is targeting power users, so the main purpose of these experiments is for the software to get out of the way.</p>

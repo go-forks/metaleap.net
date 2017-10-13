@@ -1,0 +1,159 @@
+<h1>Auto-indent Show-ables with 43 deps..</h1>
+<div class="ml-info">
+(The <i>actual</i> Haskell code snippet at the bottom-of-page &mdash; but first, some ranty ruminations ;)
+</div>
+<p>
+	Any programmer often needs to output live data temporarily for inspection,
+	serialized in a structured-but-human-readable format (think JSON) and
+	in Haskell, using {X|c:show|} on any {X|c:Show|}able does this brilliantly.
+	Alas it's missing indentation of course, its primary
+	purpose being reproducable roundtrippable serialization.
+	This is fine until it isn't (eg. with many 1000s of output
+	"lines"-when-wrapped for just 4 {X|c:Show|}ables while interoperating with Cabal).
+</p>
+{X|h2:So you look for a lib|}
+<p>
+	Something lean only for temporary-developer-debugging-diagnostics-troubleshooting
+	purposes, to be discarded when the code in question has solidified. Luckily you
+	find just such a thing: roughly paraphrased (I don't want to rain on anyone's
+	open-source libraries after all! it's not about that), its description reads <i>"this
+	is simple-but-robust: we don't fully parse Haskell syntax of {X|c:Show|}able outputs,
+	instead we just insert line-breaks and indentation reacting on commas, parentheses etc.
+	This makes it robust even in the face of non-Haskell-syntax {X|c:Show|}able outputs".</i>
+	Sounds brilliant! Exactly what's needed, just the necessary <i>mere modicum</i> of
+	readability that indentation and line-wrappings afford us, without needing to code {X|c:Show|}
+	instances for 3rd-party {X|c:data|} types. Let's {X|c:stack install|} it and give it a try!
+</p>
+{X|h2:Only 2 dependencies..|}
+<p>
+	Wait first quickly look at the dependencies.. ah well, "only 2" besides {X|c:base|}:
+</p>
+<ul>
+	<li><b>ansi-wl-pprint</b>, "a pretty printing library based on Wadler's paper A Prettier
+	Printer, enhanced with support for ANSI terminal colored output" &mdash; uh-huh.. well let's see how
+	that plays with outputting on Windows to console windows, SublimeText's output log or temp files..</li>
+	<li><b>trifecta</b>, "modern parser combinator library with slicing and Clang-style colored diagnostics"
+	&mdash; booy, fancy that! Again with the colors and what, now we <i>do</i> need some parsing action after all?</li>
+</ul>
+{X|h2:..no wait, it's 43|}
+<p>
+	Anyway, you forget to remember that these 2 dependencies mean many more cascading dependencies and you
+	still give it a try in your fresh library project. Immediately, {X|c:stack|} commands that you now list
+	in the project's {X|c:stack.yaml|} a whopping additional 43 {X|c:extra-deps|} because they don't come
+	out-of-box with the standard Haskell (Stack) distribution:
+</p>
+<pre>
+- StateVar-1.1.0.4
+- adjunctions-4.3
+- integer-logarithms-1.0.1
+- prelude-extras-0.4.0.3
+- primitive-0.6.2.0
+- stm-2.4.4.1
+- attoparsec-0.13.1.0
+- base-orphans-0.5.4
+- bifunctors-5.4.1
+- contravariant-1.4
+- distributive-0.5.2
+- exceptions-0.8.3
+- free-4.12.4
+- kan-extensions-5.0.1
+- parallel-3.2.1.0
+- parsec-3.1.11
+- reflection-2.1.2
+- scientific-0.3.4.10
+- semigroupoids-5.1
+- tagged-0.8.5
+- text-1.2.2.1
+- transformers-compat-0.5.1.4
+- vector-0.12.0.0
+- void-0.7.1
+- ansi-terminal-0.6.2.3
+- blaze-builder-0.4.0.2
+- blaze-html-0.9.0.1
+- blaze-markup-0.8.0.0
+- charset-0.3.7.1
+- comonad-5
+- fingertree-0.1.1.0
+- hashable-1.2.5.0
+- lens-4.15.1
+- mtl-2.2.1
+- parsers-0.12.4
+- profunctors-5.2
+- reducers-3.12.1
+- semigroups-0.18.2
+- unordered-containers-0.2.7.2
+- utf8-string-1.0.1.1
+- show-prettyprint-0.1.2
+- ansi-wl-pprint-0.6.7.3
+- trifecta-1.6.2.1
+</pre>
+{X|h2:Why is this rantworthy|}
+<p>Now in how many ways might this impede perhaps not all or most, but certainly "some" (aka. me) &mdash;</p>
+<ul>
+	<li>Any downstream package that will depend on this library project (and you know today there
+		<i>will</i> be numerous) will need all these too (at least when referenced from {X|c:custom-setup|}
+		or {X|c:explicit-setup-deps|} &mdash; and you know today that <i>will</i> be so).</li>
+	<li>
+		Once the code-base has stabilized and there's no need for {X|c:Show|}able outputs,
+		will you remember to remove these? Oh but by now some other dependency might depend on 1 of these
+		43! All doable, yes; all workable, sure; all a major annoyance with regards to "developer flow".
+	</li>
+	<li>Of course you end up with some IO/buffering abort/error message situation half-way through the
+		output. I know, I know, time to go Linux/Unix/Posix and ditch Windows. <i>It would  only take a day
+		or so, after all</i>, to go from my machine's currently fully well-known stability/solidity/robustness
+		to a new, hard-to-predict state of things. And I <i>do</i> like the Unices (my Windows is a leftover from
+		3D / OpenGL hacking last few years &mdash; I know how to make it lean, fast, reliable and resilient).
+		Anyway, mission failed, proper desired output not attainable.</li>
+	<li>Of course {X|c:.stack-work|} blew up from under-1MB (for a fairly fresh library package) to over-100MB,
+		but that's inconsequential nowadays &mdash; except <i>for the <b>utterly trivial</b> use-case at hand,
+		just seems so unnecessarily wasteful</i> (not the original library author's fault of course! &mdash;my
+		use-case certainly wasn't his job to predict). Once you go down this path, you soon lose all discipline
+		and the more your code-base grows out of hand, the more ready you and others will be to abandon it (yes,
+		I count many dozens of dependencies instead of a dozen LoC "a code-base growing out of hands", because
+		there <i>will</i> be conflicts, install errors, support issues in the future as some of these grow stale
+		and the rest of the ecosystem evolves further &mdash; 3rd-party deps are both assets and liabilities..)
+		</li>
+</ul>
+{X|h2:Just code the thing|}
+<p>So one does what has always worked well in the past, get one's hands dirty and get coding. The trend for the last
+few years was of course "a personal blog / CMS / ERP / Facebook clone in 3 lines" but ignoring such tomfoolery, we end
+up with 20 lines for the most basic, brute-force, naive auto-indenting-and-line-wrapping of {X|c:Show|}able outputs
+&mdash; geared towards record-dominant outputs, not parens-dominant (so not suited for such ADT structures).</p>
+<pre>
+autoIndent =
+    ind (0::Int , False , False , False) <b>where</b>
+    ind _ ""
+        = ""
+    ind (ind1 , instr1 , inchr1 , inesc1) (c:rest)
+        = <b>let</b> inany = instr2||inchr2||inesc2
+            inesc2 = (instr2||inchr2) &amp;&amp; (not inesc1) &amp;&amp; (c=='\\')
+            instr2  | instr1    = c/='\"' || inesc1
+                    | _         = c=='\"' &amp;&amp; not (inchr1||inesc1)
+            inchr2  | inchr1    = c/='\'' || inesc1
+                    | _         = c=='\'' &amp;&amp; not (instr1||inesc1)
+            ind2    | inany     = ind1
+                    | _         = i c <b>where</b>
+                        i '{' = ind1 + 1 ; i '}' = ind1 - 1 ; i _ = ind1
+            nuline  | inany     = False
+                    | _         = n c <b>where</b>
+                        n '{' = True ; n ',' = True ; n _ = False
+            nuln = <b>if</b> not nuline <b>then</b> "" <b>else</b>
+                    '\n' : Data.List.replicate ind2 '\t'
+        <b>in</b> c : nuln ++ ind (ind2 , instr2 , inchr2 , inesc2) rest
+</pre>
+<p>Spot a bug? Let me know. Can make the same thing more succinct? Let me know! Have a "cool"
+feature idea, a way to generalize this or allow for more parameterization or
+react-on-parens-and-brackets-too-not-just-braces? Then how about you write a library package that
+needs ~43 dependencies and put it up on Hackage..  ;)</p>
+<p>Outputs still look "mildy odd" (compared to "proper code" or hand-authored such representations)
+when you don't parse certain contexts and then especially-format with regards to those, but that's OK,
+at least not "majorly irritating" and I have what I <i>actually needed</i> (some basic indentation and
+appropriate line-breaks) and <i>nothing else</i>. And this is one of those coding needs that comes
+back again and again and again, so good to not need to carry these 43 unneeded, untested, unknown,
+unscrutinized (for now!) dependencies over to all kinds of current and upcoming projects &mdash; <b>at
+least for such a mundane and transient purpose</b>!</p>
+<p>I know, of course: "Stack makes handling dependencies a non-issue" (except needing to manually list
+not just 2 immediate ones but also the other 41 indirect ones for this current library project and all
+downstream "importers"!) and most probably the compilation pipeline never links what isn't actually
+used in code, but still! "Leanness", frugality, "<a href="http://suckless.org">sucklessness</a>" begins
+at home, in your backyard! Except for throwaway projects of course, there anything goes.</p>
