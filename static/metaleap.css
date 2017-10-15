@@ -12,7 +12,7 @@ body {
 	/*font-family: "Ubuntu Mono", "Roboto Mono", "Droid Sans Mono", "San Francisco Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "HyperFont", "Consolas", "Lucida Console", monospace;*/
 	font-family: "Share Tech Mono", "Iosevka Slab", "Iosevka", "IosevkaCC", "Din Mono", "CamingoCode", "Anka/Coder Condensed", "San Francisco Mono", "Roboto Mono", "Menlo", "Droid Sans Mono", "Fira Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "Ubuntu Mono", "HyperFont", "Consolas", "Lucida Console", monospace;
 
-	background-color: #f9f6ef;
+	background-color: #f7f4ed;
 	color: #707880;
 	letter-spacing: -0.044em;
 }
@@ -277,8 +277,8 @@ pre {
 	align-content: space-around;
 }
 .ml-flex-side {
-	/*background: linear-gradient(to bottom, rgba(224,221,211,0.66) 0%, #f9f6ef 88%);*/
-	background: linear-gradient(to bottom, rgba(199, 222, 233, 0.66) 0%, #f9f6ef 1.23em);
+	/*background: linear-gradient(to bottom, rgba(224,221,211,0.66) 0%, #f7f4ed 88%);*/
+	background: linear-gradient(to bottom, rgba(199, 222, 233, 0.66) 0%, #f7f4ed 1.23em);
 
 	flex: 1 1 15em;
 	display: inline-block;
