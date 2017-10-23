@@ -268,10 +268,10 @@
 			A DOM API library for handling XML Schema Definition (XSD) documents in Go code; includes a source-code generator to instantly create 'native Golang bindings' for any given XML Schema Definition
 
 |P|work:	dt = "2012-10-18", cat = "{T|GoMisc|}",
-			title="go-Utils",
-			link="http://github.com/metaleap?tab=repositories&amp;q=go-util", more=[("pic","Logo:golang1.png")],
+			title="go-Util",
+			link="http://github.com/metaleap/go-util", more=[("pic","Logo:golang1.png")],
 			content=>
-			All the general-purpose programming libraries I was missing in vanilla Go; includes graphics, hashing, file I/O, networking, maths / numeric and string-processing helpers that I found indispensible in real-world Go programming
+			All the general-purpose programming libraries I was missing in vanilla Go; includes imaging, hashing, DB, file I/O, networking, maths / numeric and string-processing helpers that I found indispensible in real-world Go programming
 
 |P|work:	dt = "2011-06-30", cat = "{T|Cs|}, {T|Sp|}",
 			title="SharePoint-Tools.NET: founding, ops, product development, docs, support, marketing, etc.",
