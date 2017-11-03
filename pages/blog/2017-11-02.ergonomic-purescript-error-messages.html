@@ -1,0 +1,74 @@
+<h1>On the Ergonomics of FP compiler errors in PureScript / Haskell</h1>
+<p>
+	Authors of compilers for Pure Functional Programming languages with as rich, extensive
+	and extensible type-systems as the current-gen "ML family" (top-spots Haskell, Elm, PureScript)
+	seem to find it challenging to formulate many-if-not-most of their compiler's error messages
+	&mdash;typically arising in already highly abstracted, &uuml;ber-generalized "meta-sphere"
+	contexts&mdash; in a manner that won't frustrate practically all beginner and intermediate users,
+	plus a substantial number of veterans. As a result, complaints about "cryptic errors" abound
+	and often top the lists-of-criticisms in most threads about Haskell and PureScript.
+</p>
+<p>
+	Now Elm is famed for it's user-friendly error messages, and I have good reason to believe that
+	a <i>lot</i> of thought (hence, a lot of time) went into them &mdash; though the simple reality
+	of course is that their language doesn't offer any powers "do express cryptic things" in the
+	<i>first</i> place, which greatly simplifies its formulation of error messages! (Still quite
+	the effort I'm sure &mdash; I know from experience how it's "the little things" that eat up
+	your time yet make all the difference in the product to most (prospective) users.)
+</p>
+{X|h2: My simple hack for writing non-irritating error messages |}
+<p>
+	without spending hours pondering over them, would be to ditch most FP compiler authors' apparent
+	implicit assumption that their users would surely like to fully understand or even study more
+	about the intricate conundrum their (usually) type-checker / type-inferencer got unresolvably
+	stuck in at this moment. <b>Not so!</b> At least, not here, not right now. Not when this error
+	shows up. Compilers: save the elaborate polite deductions. To illustrate my thinking here,
+	I posted the following <a href="https://www.reddit.com/r/haskell/comments/79i7h9/why_is_elm_more_popular_than_purescript/dp33aef/">
+	in a recent thread on the topics</a>, which was wordy enough to repost here. To recap:
+</p>
+{X|h2: 'Prelude' |}
+<h3>jmite writes:</h3>
+<p>
+	<i>"Rigid/skolem type variable bound by x has escaped" &mdash; In all seriousness (...) Elm puts a ton of effort
+	into error messages and keeping the language minimal.</i>
+</p>
+<h3>Phil A. Freeman responds:</h3>
+<p>
+	<i>Our error messages have gotten quite a lot better since then. In that case, you would see something like:</i>
+	<pre>
+  The type variable h, bound at
+
+    File.purs, line 9, column 14 - line 9, column 25
+
+  has escaped its scope, appearing in the type
+
+    Eff t1 (STRef h0 Int)
+
+in the expression runST (newSTRef 1)
+in value declaration test
+	</pre>
+	<p><i>which I think is pretty decent, given what's actually going on in this case. As you add more type system features,
+	of course it will be harder to understand the ways in which it can fail. It's one of the reasons why Elm is better
+	for newcomers to FP. I would love to see a language with Elm's error messages and PureScript's type system features,
+	I just don't know if it's possible.</i></p>
+</p>
+{X|h2: My take: |}
+<p>
+Definitely an improvement. If you follow through on the guiding principles behind these intuitive changes, I think it's straightforward in the overwhelming majority of such cases to easily and quickly arrive at a final ultimate form that highlights <i>the problematic part in the code</i>, not <i>why it bothers the compiler</i>. This makes things more "actionable". For example in the above, what bothers the compiler is "escaped its scope", but for anyone who <i>didn't ever</i> implement a type-system as rich as PureScript's, they don't care about what they don't necessarily currently, <i>right-this-minute</i>, while iterating-and-about-to-ship, grok. What they <i>do</i> care about here is "`h` appears in `Eff t1 etc` and this was unexpected and I, `purs` can't deal with that". So to redesign such error messages would be akin to:
+</p>
+<pre>
+You cannot refer to type variable h..
+
+    File.purs, line 9, column 14 - line 9, column 25
+
+..out of scope in type:
+
+    Eff t1 (STRef h0 Int)
+
+in expression runST (newSTRef 1)
+in declaration 'test'
+</pre>
+<p>This looks like <i>very, very minor changes</i> (a fair number of them if you compare closely), even has a few more words, but I think all of them together quite reduce mental load and "parsing effort" for the (Pure)scripter "in the heat of the moment". Less detail and prose here means more instant identification of the offender to be attacked:</p>
+<p>
+It's not about doing ELI5 messages, simply cutting all jargon and verbiage to not further irritate. A compiler can never be argued with, so it <i>doesn't need to explain</i> it's full reasoning and justifications in deep detail and it's better ergonomically (in this situation which is a dev session, not a lecture or tutorial) for it to just calmly assert, like a 1950's officer puffing a Cohiba with a semi-grin, that "you cannot do X, simple as that", which is (well, should be) the essence of 99% of compiler messages. Any details, there's a link included <i>already</i>. <b>As if</b> a type-variable developed a mind of its own and "escaped"! Very colourful I'm sure in type-theory papers or conference talks, but just an unnecessary roadblock to "the hacker on the ground" and while the air &amp; mind are filled thick with anxious impatience to see one's latest changes built "stat".
+</p>
