@@ -522,7 +522,7 @@ div.ml-info {
 		display: inline-block;
 	}
 }
-.fa-feed, .fa-reddit-alien, .fa-yc, .fa-github-square {
+.fa-feed, .fa-reddit-alien, .fa-yc, .fa-github-square, .fa-stack-overflow {
 	font-size: 0.8em !important;
 }
 @media (max-width: 20.0em) {
