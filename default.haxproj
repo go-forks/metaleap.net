@@ -126,7 +126,7 @@
 			link = "",
 			more = [], content=>
 			An approximate answer to the right problem is worth a good deal more than an exact answer to an approximate problem.
-|P|quotes:	dt = "", cat = "", title = "Edsger Dijkstra",
+|P|quotes:	dt = "", cat = "", title = "Edsger W. Dijkstra",
 			link = "",
 			more = [], content=>
 			Simplicity is a great virtue but it requires hard work to achieve it and education to appreciate it. And to make matters worse: complexity sells better.
@@ -156,7 +156,7 @@
 			Simplicity is the most difficult thing to secure in this world; it is the last limit of experience and the last effort of genius.
 |P|quotes:	dt = "", cat = "", title = "Brian Beckman", link = "href=\"https://youtu.be/ZhuHCtR3xq8?t=1003\"", more = [], content=>
 			As software gets ever more complicated, we need better control over the complexity. [...] <b>The</b> way to control complexity is compositionality.
-|P|quotes:	dt = "", cat = "", title = "Edsger Dijkstra",
+|P|quotes:	dt = "", cat = "", title = "Edsger W. Dijkstra",
 			link = "href=\"http://www.cs.virginia.edu/~evans/cs655/readings/ewd498.html\"",
 			more = [], content=>
 			Simplicity is prerequisite for reliability.
@@ -184,6 +184,10 @@
 			link = "",
 			more = [], content=>
 			The purpose of software engineering is to control complexity, not to create it.
+|P|quotes:	dt = "", cat = "", title = "Edsger W. Dijkstra",
+			link = "",
+			more = [], content=>
+			After more than 45 years in the field, I am still convinced that in computing, elegance is not a dispensable luxury but a quality that decides between success and failure.
 |P|quotes:	dt = "", cat = "", title = "Ryan Singer",
 			link = "href=\"https://signalvnoise.com/posts/2316-so-much-complexity-in-software-comes-from\"",
 			more = [], content=>

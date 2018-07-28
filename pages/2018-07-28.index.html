@@ -1,0 +1,45 @@
+<h1>I'm Phil:</h1>
+{%P|fcatblog=dtHome|%}
+{%P|flwork=const|%}
+<span class="ml-notrimdesc">
+{X|FeedView: feeds=["intro"] , groups = [ Group "" [] AnyDate ], xVars = [
+		("L", Wrap "href=\"" "\"" (F "link"))
+	,	("C", F "cat")
+	,	("t", F "title")
+	,	("P", X (F "pic"))
+	,	("D", F "content")
+	]
+
+|}
+</span>
+<p style="padding: 0 0.66em 0 0.66em"><b>Currently,</b> since Dec 2017 on-site in D&uuml;sseldorf: full-time consulting, coaching, co-architecting and co-developing for+with an agile product team of software developers (in a major global retail concern) on "In-House Cloud" development (Go microservices with REST-ful and also RPC APIs).</p>
+<span>
+{X|FeedView: feeds=["blog","work"] , groups = [
+		Group "2017" [] (Between "2017" "2020")
+	,	Group "2016" [] (Between "2016" "2017")
+	,	Group "2015" [] (Between "2015" "2016")
+	,	Group "2014" [] (Between "2014" "2015")
+	,	Group "2013" [] (Between "2013" "2014")
+	,	Group "2012" [] (Between "2012" "2013")
+	], xVars = [
+		("d", F "dt")
+	,	("L", Wrap "href=\"" "\"" (FeedWise "work" (PrefixIf "work.html#" (F "dt")) (F "link")))
+	,	("C", Format "%s: %s" [F "feed" , DtFormat "dtf_Home" (F "cat")])
+	,	("t", F "title")
+	,	("P", X (OneOf [F "pic" , PrefixIf "FeedAutoIcon:" (F "<img>src")]))
+	,	("D", StripMarkup (F "content"))
+	]
+
+|}
+</span>
+{X|h2: More.. |}
+<ul>
+	<li><a href="blog.html">All articles 2005-2017</a></li>
+	<li><a href="work.html">All projects 2000-2017</a></li>
+	<li><a href="phil.html#Timeline">Vita / timeline</a></li>
+</ul>
+<style type="text/css">
+.ml-bg {
+	background-image: url('files/img/life/2011-11-colombo-sri-lanka/27.jpg')
+}
+</style>

@@ -1,3 +1,13 @@
+@font-face {
+	font-family: 'Share-Tech-Mono';
+	src: url('files/font/Share-Tech-Mono.ttf.woff') format('woff'),
+		url('files/font/Share-Tech-Mono.ttf.svg#Share-Tech-Mono') format('svg'),
+		url('files/font/Share-Tech-Mono.ttf.eot'),
+		url('files/font/Share-Tech-Mono.ttf.eot?#iefix') format('embedded-opentype');
+	font-weight: normal;
+	font-style: normal;
+}
+
 body, h1, h2, h3, h4, h5, h6, code, pre,
 .ml-head, .ml-home, .ml-nav, #ml_flex, .ml-box ul, .ml-footer-ico, .ml-footer {
 	padding: 0;
@@ -7,10 +17,12 @@ body, h1, h2, h3, h4, h5, h6, code, pre,
 img {
 	image-rendering: optimizeQuality;
 }
+body, all, * {
+	font-variant-ligatures: none;
+}
 body {
 	image-rendering: optimizeQuality;
-	/*font-family: "Ubuntu Mono", "Roboto Mono", "Droid Sans Mono", "San Francisco Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "HyperFont", "Consolas", "Lucida Console", monospace;*/
-	font-family: "Share Tech Mono", "Iosevka Slab", "Iosevka", "IosevkaCC", "Din Mono", "CamingoCode", "Anka/Coder Condensed", "San Francisco Mono", "Roboto Mono", "Menlo", "Droid Sans Mono", "Fira Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "Ubuntu Mono", "HyperFont", "Consolas", "Lucida Console", monospace;
+	font-family: "Share-Tech-Mono", "Share Tech Mono", "Iosevka Slab", "Iosevka", "IosevkaCC", "Din Mono", "CamingoCode", "Anka/Coder Condensed", "San Francisco Mono", "Roboto Mono", "Menlo", "Droid Sans Mono", "Fira Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "Ubuntu Mono", "HyperFont", "Consolas", "Lucida Console", monospace;
 
 	background-color: #f7f4ed;
 	color: #707880;
@@ -89,7 +101,6 @@ h4 {
 	color: #fefdfc;
 	padding-top: 1.488em;
 	display: inline-block;
-	/*font-family: "Share Tech Mono", "Ubuntu Mono", "Roboto Mono", "Droid Sans Mono", "San Francisco Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "HyperFont", "Consolas", "Lucida Console", monospace;*/
 	font-weight: normal;
 	font-size: 1.11em;
 	line-height: 0.85em;
@@ -122,7 +133,6 @@ ul.ml-nav {
 	white-space: nowrap;
 }
 li.ml-nav {
-	/*font-family: "Share Tech Mono", "Ubuntu Mono", "Roboto Mono", "Droid Sans Mono", "San Francisco Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "HyperFont", "Consolas", "Lucida Console", monospace;*/
 	font-weight: bold;
 	font-size: 1.75em;
 	letter-spacing: -0.066em;
@@ -175,7 +185,6 @@ small.ml-prehead {
 	letter-spacing: -0.088em;
 }
 h2 {
-	/*font-family: "Share Tech Mono", "Ubuntu Mono", "Roboto Mono", "Droid Sans Mono", "San Francisco Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "HyperFont", "Consolas", "Lucida Console", monospace;*/
 	font-weight: normal;
 	font-size: 1.88em;
 	letter-spacing: -0.11em;
@@ -183,7 +192,8 @@ h2 {
 	text-align: center;
 	text-transform: uppercase;
 	line-height: 0.8em;
-	margin-top: 1.33em;
+	margin-top: 1.88em;
+	margin-bottom: 0.88em;
 	padding: 0.077em 0 0 0;
 	border-top: 0.033em dotted #A8C8B8;
 	border-bottom: 0.033em dotted #A8C8B8;
@@ -215,9 +225,7 @@ a.ml-pic img {
 code, pre {
 	background: #ece8e0;
 	color: #567;
-	font-family: Menlo, "Din Mono", "Fira Code", "Hasklig", "Monoid", "Space Mono", "Iosevka Term", "Iosevka", "IosevkaCC", "CamingoCode", "Anka/Coder", "San Francisco Mono", "Roboto Mono", "Droid Sans Mono", "Fira Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "Ubuntu Mono", "HyperFont", "Consolas", "Lucida Console", monospace;
-	font-weight: 400;
-	font-size: 0.88em;
+	font-family: "Share-Tech-Mono", "Share Tech Mono", "Iosevka Slab", "Iosevka", "IosevkaCC", "Din Mono", "CamingoCode", "Anka/Coder Condensed", "San Francisco Mono", "Roboto Mono", "Menlo", "Droid Sans Mono", "Fira Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "Ubuntu Mono", "HyperFont", "Consolas", "Lucida Console", monospace;
 	white-space: pre-wrap;
 	border: 0.066em solid #d6d6d0;
 	border-radius: 0.44em;
@@ -229,13 +237,12 @@ pre {
 	padding: 0.33em 1.44em;
 	line-height: 1.66em;
 	overflow: auto;
-	font-size: 0.75em;
 }
 #ml_body {
-	padding: 0 1.44em 1.88em 1.44em;
+	padding: 0 1.66em 1.88em 1.44em;
 }
 .ml-box {
-	padding: 1em 1.23em;
+	padding: 1em 0.66em 1.55em 1.44em;
 }
 
 
@@ -256,7 +263,6 @@ pre {
 }
 #ml_gen > p, #ml_gen > ul, #ml_gen > ol {
 	font-size: 0.88em;
-	font-family: "Fira Code", Menlo, Hasklig, "Din Mono", "CamingoCode", "Monoid", "Space Mono", "Iosevka Term", "Iosevka", "IosevkaCC", "Anka/Coder", "San Francisco Mono", "Roboto Mono", "Droid Sans Mono", "Fira Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "Ubuntu Mono", "HyperFont", "Consolas", "Lucida Console", monospace;
 	padding-left: 1.23em;
 }
 #ml_gen a[href] {
@@ -265,7 +271,7 @@ pre {
 .ml-flex-sides {
 	font-size: 0.75em;
 	color: #A0A8A4;
-	line-height: 1.33em;
+	line-height: 1.66em;
 	z-index: 99999;
 	margin-top: 1.633em;
 
@@ -278,11 +284,11 @@ pre {
 }
 .ml-flex-side {
 	/*background: linear-gradient(to bottom, rgba(224,221,211,0.66) 0%, #f7f4ed 88%);*/
-	background: linear-gradient(to bottom, rgba(199, 222, 233, 0.66) 0%, #f7f4ed 1.23em);
+	background: linear-gradient(to bottom, rgba(188, 222, 244, 0.66) 0%, #f7f4ed 1.23em);
 
 	flex: 1 1 15em;
 	display: inline-block;
-	padding-bottom: 1em;
+	padding-bottom: 3.21em;
 	min-width: 15em;
 }
 .ml-flex-side:nth-child(1) {
@@ -390,10 +396,9 @@ h5 {
 	text-align: left;
 	text-transform: lowercase;
 	font-size: 1.77em;
-	/*font-family: "VT323", "Share Tech Mono", "Iosevka Term", "Iosevka", "IosevkaCC", Menlo, "Din Mono", "CamingoCode", "Anka/Coder Condensed", "San Francisco Mono", "Roboto Mono", "Droid Sans Mono", "Fira Mono", "DejaVu Sans Mono", "Segoe UI Mono", "Terminus", "ProFont", "PragmataPro", "monofur", "Letter Gothic", "Inconsolata", "Everson Mono", "Monaco", "Andale Mono", "Ubuntu Mono", "HyperFont", "Consolas", "Lucida Console", monospace;*/
 	font-style: italic;
 	letter-spacing: -0.133em;
-	margin-bottom: 0.66em;
+	margin-bottom: 0.88em;
 	margin-top: -0.75em;
 	line-height: 0.572em;
 	color: #fefdfc;
@@ -410,7 +415,8 @@ h5 i.fa {
 .ml-quotee {
 	display: block;
 	text-align: right;
-	margin: 0.5em 0 0 0;
+	margin: 0.88em 0 0 0;
+	padding-top: 0.11em;
 	border-top: 0.077em dotted #c9c0b0;
 }
 
