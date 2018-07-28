@@ -98,11 +98,11 @@
 
 |P|intro:	dt="2016-06-05", cat="Entwickler", title="Developer", link="phil.html",
 			more=[("pic","Logo:elm-lang.png")], content=>
-			Full-stack &sdot; APIs / middleware &sdot; MVPs &sdot; mobile, 3D &amp; progressive web apps
+			Technically full-stack, practically back-end &sdot; microservices / distributed systems, REST-ful / RPC / GraphQL API-driven development
 
 |P|intro:	dt="2016-06-01", cat="Programmierer", title="Coder", link="phil.html#box_skills",
 			more=[("pic","Logo:purescript.png")], content=>
-			Go &sdot; PureScript &sdot; Haskell, F#, Elm &sdot; C#, GLSL, WebGL &sdot; TypeScript, Node
+			Professionally mostly: Go. Occasionally and/or hobbyist: Node w/ TypeScript &sdot; Haskell, PureScript, Elm &sdot; GLSL / WebGL &sdot; Lisps
 
 
 
