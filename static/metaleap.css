@@ -528,9 +528,22 @@ div.ml-info {
 		display: inline-block;
 	}
 }
-.fa-feed, .fa-reddit-alien, .fa-yc, .fa-github-square, .fa-stack-overflow {
+.fa-feed {
 	font-size: 0.8em !important;
 }
+.fa-reddit-alien {
+	font-size: 0.7em !important;
+}
+.fa-yc {
+	font-size: 0.8em !important;
+}
+.fa-github {
+	font-size: 0.9em !important;
+}
+.fa-stack-overflow {
+	font-size: 0.88em !important;
+}
+
 @media (max-width: 20.0em) {
 	a.fa-reddit-alien, a.fa-yc {
 		display: none;
