@@ -270,7 +270,7 @@ pre {
 }
 .ml-flex-sides {
 	font-size: 0.75em;
-	color: #A0A8A4;
+	color: #909894;
 	line-height: 1.66em;
 	z-index: 99999;
 	margin-top: 1.633em;
@@ -322,7 +322,7 @@ ul.ml-feed > li ul {
 	padding-left: 1em;
 }
 ul.ml-feed > li a, ul.ml-feed > li a:hover, ul.ml-feed > li a:active {
-	color: #908888 !important;
+	color: #807878 !important;
 	background: none !important;
 	font-weight: normal !important;
 }
