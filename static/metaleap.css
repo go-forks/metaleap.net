@@ -72,6 +72,7 @@ a img, img {
 	box-shadow: 0 0.122em 1.66em 0.122em #505860;
 	height: 2.83em;
 	background-position: center top;
+	background-blend-mode: hard-light;
 }
 .ml-head {
 	position: fixed; top: 0; z-index: 999998; width:100%;
