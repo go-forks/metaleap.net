@@ -122,6 +122,10 @@
 			link = "",
 			more = [], content=>
 			Making the simple complicated is commonplace; making the complicated simple, awesomely simple, that's creativity.
+|P|quotes:	dt = "", cat = "", title = "Stanislav Datskovskiy",
+			link = "",
+			more = [], content=>
+			You can't get to the moon by piling up chairs.
 |P|quotes:	dt = "", cat = "", title = "John Tukey",
 			link = "",
 			more = [], content=>
