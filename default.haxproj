@@ -207,6 +207,48 @@
 
 
 
+|P|work:	dt = "2018-01-01", cat = "{T|Go|}, Microservices, Cloud, APIs",
+			title="Metronom",
+			link="http://msys.net", more=[("pic","Logo:metronom.png")],
+			content=>
+			(Dec 2017 - Oct 2018) on-site in D&uuml;sseldorf: full-time co-developing + co-architecting + dev-coaching (Go microservices in k8s with RPC as well as REST-ful APIs) for &amp; with an agile product team building in-house cloud infrastructure at major global retail concern METRO's IT company
+
+|P|work:	dt = "2018-01-29", cat = "{T|Go|}",
+			title="go-machines",
+			link="http://github.com/metaleap/go-machines", more=[("pic","Logo:golang1.png")],
+			content=>
+			state-transition machines / byte-code VMs + graph-reducing evaluators: P-code machine, Brainf_ck evaluator, template instantiation machine, classical G-machine, spineless-tagless G-machine
+
+|P|work:	dt = "2018-01-28", cat = "{T|Go|}",
+			title="go-tinylang",
+			link="http://github.com/metaleap/go-tinylang#readme", more=[("pic","Logo:golang1.png")],
+			content=>
+			self-contained REPL for a mini-language (nums & arithmetic operators) with pluggable interpreters, written from scratch on a Sunday
+
+|P|work:	dt = "2018-06-15", cat = "{T|Go|}",
+			title="go-gent",
+			link="http://github.com/metaleap/go-gent#readme", more=[("pic","Logo:golang1.png")],
+			content=>
+			inspired by the work on <code>gogen-dump</code>, a more carefully designed, generalized and principled Go code-gen framework
+
+|P|work:	dt = "2018-03-03", cat = "{T|Go|}",
+			title="gogen-dump",
+			link="http://github.com/metaleap/gogen-dump#readme", more=[("pic","Logo:golang1.png")],
+			content=>
+			how to beat JSON / gRPC / ProtoBufs in all-Go homogenous envs: code-gen for low-level = high-performance, <code>reflect</code>-less, <code>unsafe</code>-powered (arbitrarily-deep + arbitrarily-indirected) binary (de)serialization
+
+|P|work:	dt = "2018-01-21", cat = "{T|Go|}",
+			title="go-leap",
+			link="http://github.com/go-leap", more=[("pic","Logo:golang1.png")],
+			content=>
+			Full refactoring of my earlier, now years-old legacy <b>go-util</b> packages: general-purpose utility programming libraries I was missing in vanilla Go
+
+|P|work:	dt = "2018-10-01", cat = "{T|Go|}, {T|Ts|}, {T|Node|}",
+			title="LLVM playground",
+			link="http://github.com/metaleap/llvm-playground", more=[("pic","Logo:nodejs.png")],
+			content=>
+			Emitting LLVM-IR intermediate-representation language: experimentations & explorations
+
 |P|work:	dt = "2017-03-18", cat = "{T|Go|}, {T|Ts|}, {T|Node|}",
 			title="Zentient",
 			link="http://github.com/metaleap/zentient", more=[("pic","Logo:golang1.png")],
@@ -232,6 +274,12 @@
 			link="http://github.com/metaleap/haxtatic/", more=[("pic","Logo:hask.png")],
 			content=>
 			"controls" (aka. "components" aka. sub-templates aka. parametric-snippets aka. what-have-you-lets) &sdot; iterating renderers &sdot; HTML short-hand helper ('haX')tags &sdot; navigation helpers &sdot; page context / page metadata haXtags &sdot; mix-and-match-and-combine-and-nest any haXtags &sdot; embed haXtags anywhere (source contents, templates/snippets(-aka.-controls), project/config file) &sdot; some almost-enough-for-a-coder's-minimalist-blog-or-three "section-of-related-pages" notion called "Bloks" &sdot; globally shared (even-simpler-than-controls) textual/markup snippets of course &sdot; custom per-page variables &sdot; commonly desirable XML outputs (<i>sitemap.xml</i>, <i>*.atom</i>) &sdot; mod-time-differential rebuilds &sdot; per-page caching across runs &sdot; of course per-file-type templating &sdot; composable "named setups" &sdot; extensive configurability &sdot; some notion of "postings"/"simpleton data records"/"static tweets" micro-content definitions (with fully custom rendering) &sdot; easily defined, easily applied custom date-time formats ...
+
+|P|work:	dt = "2016-05-21", cat = "{T|Hask|}",
+			title="haxbase",
+			link="http://github.com/metaleap/haxbase/", more=[("pic","Logo:hask.png")],
+			content=>
+			shared library with utility modules for text &amp; list processing, configurability, debuggability, syntax sugars, convenience operators etc.
 
 |P|work:	dt = "2013-06-16", cat = "{T|GoMisc|}",
 			title="go-fsDB",

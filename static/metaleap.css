@@ -80,7 +80,7 @@ a img, img {
 }
 .ml-home {
 	color: #cba;
-	display: inline-block;
+	/*display: inline-block;*/
 	float: right;
 	margin: 0 3.11em 0 0;
 }
@@ -116,7 +116,7 @@ h4 b {
 }
 @media (max-width: 37.33em) {
 	h4 {
-		margin-right: -5.95em;
+		margin-right: -6.1em;
 	}
 }
 @media (max-width: 32em) {
@@ -563,4 +563,8 @@ div.ml-info {
 #ml_flex div.ml-sourcery a {
 	font-weight: normal;
 	font-style: italic;
+}
+
+p.index-updnote {
+	padding: 0 0.66em 0 0.66em;
 }
